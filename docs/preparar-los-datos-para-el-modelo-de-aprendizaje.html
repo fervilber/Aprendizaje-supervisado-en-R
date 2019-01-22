@@ -140,6 +140,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="6.3.1" data-path="glm.html"><a href="glm.html#ejemplo-1"><i class="fa fa-check"></i><b>6.3.1</b> Ejemplo</a></li>
 </ul></li>
 <li class="chapter" data-level="6.4" data-path="glm.html"><a href="glm.html#optimizacion-de-un-modelos-glm"><i class="fa fa-check"></i><b>6.4</b> Optimización de un modeloS <code>glm</code></a></li>
+<li class="chapter" data-level="6.5" data-path="glm.html"><a href="glm.html#glmmtmb"><i class="fa fa-check"></i><b>6.5</b> glmmTMB</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="arboles.html"><a href="arboles.html"><i class="fa fa-check"></i><b>7</b> Árboles de decisión</a><ul>
 <li class="chapter" data-level="7.1" data-path="arboles.html"><a href="arboles.html#rpart"><i class="fa fa-check"></i><b>7.1</b> rpart</a><ul>
@@ -253,23 +254,23 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co"># Creamos el conjunto de registros de entrenamiento pasando ese vector a la tabla </span>
     d_titanic_train &lt;-<span class="st"> </span>Titanic_data[titanic_train,]
     <span class="kw">head</span>(d_titanic_train)</code></pre></div>
-<pre><code>##        Class  Sex   Age Survived
-## 9.12     1st Male Adult       No
-## 12.458  Crew Male Adult       No
-## 19.9     3rd Male Child      Yes
-## 27.28    3rd Male Adult      Yes
-## 11.142   3rd Male Adult       No
-## 27.3     3rd Male Adult      Yes</code></pre>
+<pre><code>##        Class    Sex   Age Survived
+## 12.53   Crew   Male Adult       No
+## 28.107  Crew   Male Adult      Yes
+## 12.115  Crew   Male Adult       No
+## 12.94   Crew   Male Adult       No
+## 10.144   2nd   Male Adult       No
+## 29.44    1st Female Adult      Yes</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Creamos los datos de comprobación o test (notese el -)</span>
     d_titanic_test &lt;-<span class="st"> </span>Titanic_data[<span class="op">-</span>titanic_train,]
     <span class="kw">head</span>(d_titanic_test)</code></pre></div>
 <pre><code>##      Class  Sex   Age Survived
-## 3.4    3rd Male Child       No
-## 3.9    3rd Male Child       No
-## 3.10   3rd Male Child       No
-## 3.14   3rd Male Child       No
-## 3.16   3rd Male Child       No
-## 3.26   3rd Male Child       No</code></pre>
+## 3      3rd Male Child       No
+## 3.7    3rd Male Child       No
+## 3.8    3rd Male Child       No
+## 3.13   3rd Male Child       No
+## 3.25   3rd Male Child       No
+## 3.28   3rd Male Child       No</code></pre>
 <p>Usando una formulación simple hemos creado dos conjuntos de muestra aleatorios excluyentes de entrenamiento y muestra.</p>
 </div>
 <div id="ejemplo-de-particion-con-librarycaret" class="section level3">

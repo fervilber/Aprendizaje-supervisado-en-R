@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Regresión logistica binaria {#glm}
 Otro modelo de predicción de aprendizaje supervisado es el de **regresión logística**. Se trata de un tipo de análisis de regresión utilizado para predecir el resultado de una variable categórica (aquella que puede adoptar un número limitado de categorías) en función de las variables predictoras. Este modelo se enmarca dentro de los modelos denominados de *predicción lineal generalizados* o *glm* como son conocidos por sus siglas en inglés.
 
@@ -593,3 +598,154 @@ Veamos el ejemplo:
 ```
 ## Area under the curve: 0.5855
 ```
+
+## glmmTMB
+Existen algunos paquetes específicos de regresión logística para cuando tenemos datos de partida inflados en ceros. Estos casos son más habituales de lo que podemos pensar, pues muchas veces las variables origen tienen media cero con muchos valores cercanos, y lo que buscamos son casos raros fuera del rango habitual (cero).
+
+La librería `library("glmmTMB")` tienes algunas características que mejora este tipo de predicciones, y contiene algoritmos denominados *zero-inflated generalized linear mixed model* o ZIGLMM.
+
+El mejor modelo es el que mejor AIC tiene, para ello tambien es necesario la librería `library("bbmle")`.
+
+
+Veamos un ejemplo, sobre los datos de muestra de mochuelos (owlets) o polluelos de buho (owl chicks). La base de datos aporta las muestras obtenidas en diferentes nidos durante la cria de mochuelos. Los datos miden el número de llamadas que hace el mochuelo antes de que llegue el progenitor con la comida, y almacena además el tiempo que tarda, el tipo de comida, el lugar del nido y otras variables como el sexo de que llegua a alimentar.
+
+Se registra el número total de llamadas desde el nido, junto con el tamaño total de cría, que se utiliza como compensación para permitir el uso de una respuesta de Poisson.
+
+
+```r
+library("glmmTMB")
+library("bbmle")
+```
+
+```
+## Loading required package: stats4
+```
+
+```r
+summary(Owls)
+```
+
+```
+##           Nest      FoodTreatment  SexParent    ArrivalTime   
+##  Oleyes     : 52   Deprived:320   Female:245   Min.   :21.71  
+##  Montet     : 41   Satiated:279   Male  :354   1st Qu.:23.11  
+##  Etrabloz   : 34                               Median :24.38  
+##  Yvonnand   : 34                               Mean   :24.76  
+##  Champmartin: 30                               3rd Qu.:26.25  
+##  Lucens     : 29                               Max.   :29.25  
+##  (Other)    :379                                              
+##  SiblingNegotiation   BroodSize      NegPerChick     logBroodSize  
+##  Min.   : 0.00      Min.   :1.000   Min.   :0.000   Min.   :0.000  
+##  1st Qu.: 0.00      1st Qu.:4.000   1st Qu.:0.000   1st Qu.:1.386  
+##  Median : 5.00      Median :4.000   Median :1.200   Median :1.386  
+##  Mean   : 6.72      Mean   :4.392   Mean   :1.564   Mean   :1.439  
+##  3rd Qu.:11.00      3rd Qu.:5.000   3rd Qu.:2.500   3rd Qu.:1.609  
+##  Max.   :32.00      Max.   :7.000   Max.   :8.500   Max.   :1.946  
+## 
+```
+
+```r
+head(Owls)
+```
+
+```
+##         Nest FoodTreatment SexParent ArrivalTime SiblingNegotiation
+## 1 AutavauxTV      Deprived      Male       22.25                  4
+## 2 AutavauxTV      Satiated      Male       22.38                  0
+## 3 AutavauxTV      Deprived      Male       22.53                  2
+## 4 AutavauxTV      Deprived      Male       22.56                  2
+## 5 AutavauxTV      Deprived      Male       22.61                  2
+## 6 AutavauxTV      Deprived      Male       22.65                  2
+##   BroodSize NegPerChick logBroodSize
+## 1         5         0.8     1.609438
+## 2         5         0.0     1.609438
+## 3         5         0.4     1.609438
+## 4         5         0.4     1.609438
+## 5         5         0.4     1.609438
+## 6         5         0.4     1.609438
+```
+
+
+Lo primero es hacer algunas transformaciones en los datos:
+
+    1. reordenamos los nidos por el orden de la media de negociaciones por polluelo (para pintar mejor)
+    2. añadimos un log del tamaño de cria
+    3. renombramos la variable respuesta como NCalls y abreviamos otra FT
+    
+
+```r
+# SiblingNegotiation - negociacion entre hermanos
+# NegPerChick - negativas por polluelo
+Owls <- transform(Owls,Nest=reorder(Nest,NegPerChick),NCalls=SiblingNegotiation,FT=FoodTreatment)
+head(Owls)
+```
+
+```
+##         Nest FoodTreatment SexParent ArrivalTime SiblingNegotiation
+## 1 AutavauxTV      Deprived      Male       22.25                  4
+## 2 AutavauxTV      Satiated      Male       22.38                  0
+## 3 AutavauxTV      Deprived      Male       22.53                  2
+## 4 AutavauxTV      Deprived      Male       22.56                  2
+## 5 AutavauxTV      Deprived      Male       22.61                  2
+## 6 AutavauxTV      Deprived      Male       22.65                  2
+##   BroodSize NegPerChick logBroodSize NCalls       FT
+## 1         5         0.8     1.609438      4 Deprived
+## 2         5         0.0     1.609438      0 Satiated
+## 3         5         0.4     1.609438      2 Deprived
+## 4         5         0.4     1.609438      2 Deprived
+## 5         5         0.4     1.609438      2 Deprived
+## 6         5         0.4     1.609438      2 Deprived
+```
+
+```r
+plot(Owls$Nest,Owls$NCalls, col=rainbow(10))
+```
+
+<img src="05-regresionLog_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+
+Ahora ya podemos hacer el modelo `glmmTMB`. Debemos tener en cuenta que el modelo por defecto usado es un ZIGLMM (ziformula~1), si no queremos usar el inflado de ceros hay que poner (ziformula~0)
+
+
+Para la formulación de los modelos se toma como estandar la especificación desarrollada en el paquete `lme4`, y cuyo resumen puede verse [aquí](http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#model-specification) de forma estructurada.
+
+
+
+```r
+fit_zipoisson <- glmmTMB(NCalls~(FT+ArrivalTime)*SexParent+offset(log(BroodSize))+(1|Nest),data=Owls,ziformula=~1,family=poisson)
+
+confint(fit_zipoisson)
+```
+
+```
+##                                      2.5 %      97.5 %    Estimate
+## cond.(Intercept)                1.84109659  3.23879725  2.53994692
+## cond.FTSatiated                -0.40793938 -0.17427339 -0.29110639
+## cond.ArrivalTime               -0.09604799 -0.04010818 -0.06807809
+## cond.SexParentMale             -0.43318360  1.33087377  0.44884508
+## cond.FTSatiated:SexParentMale  -0.03808278  0.24753288  0.10472505
+## cond.ArrivalTime:SexParentMale -0.05736075  0.01456575 -0.02139750
+## Nest.cond.Std.Dev.(Intercept)   0.25483237  0.50762131  0.35966420
+## zi.zi~(Intercept)              -1.24200277 -0.87306435 -1.05753356
+```
+
+```r
+#summary(fit_zipoisson)
+
+# podemos usar otras aproximaciones 
+fit_zinbinom <- update(fit_zipoisson,family=nbinom2)
+fit_zinbinom1 <- update(fit_zipoisson,family=nbinom1)
+fit_zinbinom1_bs <- update(fit_zinbinom1, . ~ (FT+ArrivalTime)*SexParent+
+BroodSize+(1|Nest))
+
+# y usar el comparador de AIC para ver el mejor modelo
+AICtab(fit_zipoisson,fit_zinbinom,fit_zinbinom1,fit_zinbinom1_bs)
+```
+
+```
+##                  dAIC  df
+## fit_zinbinom1_bs   0.0 10
+## fit_zinbinom1      1.2 9 
+## fit_zinbinom      68.7 9 
+## fit_zipoisson    666.0 8
+```
+

@@ -140,6 +140,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="6.3.1" data-path="glm.html"><a href="glm.html#ejemplo-1"><i class="fa fa-check"></i><b>6.3.1</b> Ejemplo</a></li>
 </ul></li>
 <li class="chapter" data-level="6.4" data-path="glm.html"><a href="glm.html#optimizacion-de-un-modelos-glm"><i class="fa fa-check"></i><b>6.4</b> Optimización de un modeloS <code>glm</code></a></li>
+<li class="chapter" data-level="6.5" data-path="glm.html"><a href="glm.html#glmmtmb"><i class="fa fa-check"></i><b>6.5</b> glmmTMB</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="arboles.html"><a href="arboles.html"><i class="fa fa-check"></i><b>7</b> Árboles de decisión</a><ul>
 <li class="chapter" data-level="7.1" data-path="arboles.html"><a href="arboles.html#rpart"><i class="fa fa-check"></i><b>7.1</b> rpart</a><ul>
@@ -252,22 +253,22 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     d_titanic_train &lt;-<span class="st"> </span>Titanic_data[titanic_train,]
     <span class="kw">head</span>(d_titanic_train)</code></pre></div>
 <pre><code>##        Class    Sex   Age Survived
-## 11.324   3rd   Male Adult       No
-## 12.613  Crew   Male Adult       No
-## 11.162   3rd   Male Adult       No
-## 15.80    3rd Female Adult       No
-## 15.85    3rd Female Adult       No
-## 27.17    3rd   Male Adult      Yes</code></pre>
+## 23.5     3rd Female Child      Yes
+## 9.30     1st   Male Adult       No
+## 31.33    3rd Female Adult      Yes
+## 11.85    3rd   Male Adult       No
+## 29.66    1st Female Adult      Yes
+## 12.426  Crew   Male Adult       No</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Creamos los datos de comprobación o test (notese el -)</span>
     d_titanic_test &lt;-<span class="st"> </span>Titanic_data[<span class="op">-</span>titanic_train,]
     <span class="kw">head</span>(d_titanic_test)</code></pre></div>
 <pre><code>##      Class  Sex   Age Survived
+## 3.7    3rd Male Child       No
 ## 3.9    3rd Male Child       No
+## 3.12   3rd Male Child       No
+## 3.16   3rd Male Child       No
 ## 3.19   3rd Male Child       No
-## 3.21   3rd Male Child       No
-## 3.27   3rd Male Child       No
-## 3.29   3rd Male Child       No
-## 3.32   3rd Male Child       No</code></pre>
+## 3.21   3rd Male Child       No</code></pre>
 <p>Usando una formulación simple hemos creado dos conjuntos de muestra aleatorios excluyentes de entrenamiento y muestra.</p>
 </div>
 <div id="ejemplo-de-particion-con-librarycaret-1" class="section level3">

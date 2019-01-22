@@ -140,6 +140,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="6.3.1" data-path="glm.html"><a href="glm.html#ejemplo-1"><i class="fa fa-check"></i><b>6.3.1</b> Ejemplo</a></li>
 </ul></li>
 <li class="chapter" data-level="6.4" data-path="glm.html"><a href="glm.html#optimizacion-de-un-modelos-glm"><i class="fa fa-check"></i><b>6.4</b> Optimización de un modeloS <code>glm</code></a></li>
+<li class="chapter" data-level="6.5" data-path="glm.html"><a href="glm.html#glmmtmb"><i class="fa fa-check"></i><b>6.5</b> glmmTMB</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="arboles.html"><a href="arboles.html"><i class="fa fa-check"></i><b>7</b> Árboles de decisión</a><ul>
 <li class="chapter" data-level="7.1" data-path="arboles.html"><a href="arboles.html#rpart"><i class="fa fa-check"></i><b>7.1</b> rpart</a><ul>
@@ -205,10 +206,10 @@ redondea5&lt;-<span class="cf">function</span>(x,<span class="dt">base=</span><s
     t.alturas<span class="op">$</span>a.hijo&lt;-<span class="kw">redondea5</span>(t.alturas<span class="op">$</span>a.hijo,<span class="dv">10</span>)
 <span class="kw">str</span>(t.alturas) </code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    1000 obs. of  4 variables:
-##  $ a.padre: int  180 160 170 190 120 170 180 150 180 170 ...
-##  $ a.madre: int  170 150 160 150 140 150 150 140 160 150 ...
-##  $ s.hijo : Factor w/ 2 levels &quot;M&quot;,&quot;F&quot;: 2 1 1 2 2 2 2 1 1 1 ...
-##  $ a.hijo : int  180 150 160 170 130 160 170 140 160 150 ...</code></pre>
+##  $ a.padre: int  160 210 140 180 200 160 190 130 180 180 ...
+##  $ a.madre: int  140 160 160 150 160 150 140 150 160 140 ...
+##  $ s.hijo : Factor w/ 2 levels &quot;M&quot;,&quot;F&quot;: 1 1 2 1 2 1 1 2 1 1 ...
+##  $ a.hijo : int  160 200 160 180 190 170 180 150 180 170 ...</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(t.alturas,<span class="dv">10</span>), <span class="st">&quot;markdown&quot;</span>)</code></pre></div>
 <table>
 <thead>
@@ -221,64 +222,64 @@ redondea5&lt;-<span class="cf">function</span>(x,<span class="dt">base=</span><s
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">180</td>
-<td align="right">170</td>
-<td align="left">F</td>
-<td align="right">180</td>
+<td align="right">160</td>
+<td align="right">140</td>
+<td align="left">M</td>
+<td align="right">160</td>
 </tr>
 <tr class="even">
+<td align="right">210</td>
 <td align="right">160</td>
-<td align="right">150</td>
 <td align="left">M</td>
-<td align="right">150</td>
+<td align="right">200</td>
 </tr>
 <tr class="odd">
-<td align="right">170</td>
+<td align="right">140</td>
 <td align="right">160</td>
-<td align="left">M</td>
+<td align="left">F</td>
 <td align="right">160</td>
 </tr>
 <tr class="even">
+<td align="right">180</td>
+<td align="right">150</td>
+<td align="left">M</td>
+<td align="right">180</td>
+</tr>
+<tr class="odd">
+<td align="right">200</td>
+<td align="right">160</td>
+<td align="left">F</td>
 <td align="right">190</td>
+</tr>
+<tr class="even">
+<td align="right">160</td>
 <td align="right">150</td>
-<td align="left">F</td>
+<td align="left">M</td>
 <td align="right">170</td>
 </tr>
 <tr class="odd">
-<td align="right">120</td>
+<td align="right">190</td>
 <td align="right">140</td>
-<td align="left">F</td>
+<td align="left">M</td>
+<td align="right">180</td>
+</tr>
+<tr class="even">
 <td align="right">130</td>
-</tr>
-<tr class="even">
-<td align="right">170</td>
 <td align="right">150</td>
 <td align="left">F</td>
-<td align="right">160</td>
-</tr>
-<tr class="odd">
-<td align="right">180</td>
 <td align="right">150</td>
-<td align="left">F</td>
-<td align="right">170</td>
-</tr>
-<tr class="even">
-<td align="right">150</td>
-<td align="right">140</td>
-<td align="left">M</td>
-<td align="right">140</td>
 </tr>
 <tr class="odd">
 <td align="right">180</td>
 <td align="right">160</td>
 <td align="left">M</td>
-<td align="right">160</td>
+<td align="right">180</td>
 </tr>
 <tr class="even">
-<td align="right">170</td>
-<td align="right">150</td>
+<td align="right">180</td>
+<td align="right">140</td>
 <td align="left">M</td>
-<td align="right">150</td>
+<td align="right">170</td>
 </tr>
 </tbody>
 </table>
@@ -294,13 +295,16 @@ redondea5&lt;-<span class="cf">function</span>(x,<span class="dt">base=</span><s
         <span class="kw">rpart.plot</span>(model.alturas1, <span class="dt">fallen.leaves =</span> <span class="ot">FALSE</span>,
                    <span class="dt">main =</span> <span class="st">&quot;Arbol de decision de alturas hijo</span><span class="ch">\n</span><span class="st">(en funcion altura padres)</span><span class="ch">\n</span><span class="st">&quot;</span>,
                    <span class="dt">shadow.col =</span> <span class="st">&quot;gray&quot;</span>)</code></pre></div>
+<pre><code>## Warning: All boxes will be white (the box.palette argument will be ignored) because
+## the number of classes predicted by the model 10 is greater than length(box.palette) 6.
+## To silence this warning use box.palette=0 or trace=-1.</code></pre>
 <p><img src="06-arboles_decision_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># hacemos un pronostico</span>
         h2&lt;-<span class="kw">data.frame</span>(<span class="dt">a.padre=</span> <span class="kw">c</span>(<span class="dv">190</span>,<span class="dv">150</span>),<span class="dt">a.madre=</span> <span class="kw">c</span>(<span class="dv">180</span>,<span class="dv">140</span>),<span class="dt">s.hijo=</span> <span class="kw">c</span>(<span class="st">&quot;M&quot;</span>,<span class="st">&quot;M&quot;</span>))
         <span class="kw">predict</span>(model.alturas1, h2,<span class="dt">type =</span> <span class="st">&quot;class&quot;</span>)      </code></pre></div>
 <pre><code>##   1   2 
-## 160 140 
-## Levels: 110 120 130 140 150 160 170 180 190 200</code></pre>
+## 190 150 
+## Levels: 120 130 140 150 160 170 180 190 200 210</code></pre>
 </div>
 <div id="ejemplo-2-1" class="section level3">
 <h3><span class="header-section-number">7.1.2</span> Ejemplo 2</h3>
@@ -349,12 +353,12 @@ sobrevive.model &lt;-<span class="st"> </span><span class="kw">rpart</span>(surv
     titanic_train &lt;-<span class="st"> </span>ptitanic[v_titanic_train,]
     <span class="kw">head</span>(titanic_train)</code></pre></div>
 <pre><code>##      pclass survived    sex age sibsp parch
-## 183     1st survived female  30     0     0
-## 960     3rd     died   male  32     0     0
-## 1023    3rd     died   male  NA     0     0
-## 829     3rd     died female  10     5     2
-## 1163    3rd survived   male  NA     0     0
-## 595     2nd     died   male  66     0     0</code></pre>
+## 562     2nd     died   male  59     0     0
+## 1077    3rd     died female  NA     0     0
+## 202     1st     died   male  54     0     0
+## 329     2nd     died   male  34     1     0
+## 1107    3rd     died female  41     0     5
+## 1219    3rd     died   male  30     0     0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Creamos los datos de comprobación o test (notese el -)</span>
     titanic_test &lt;-<span class="st"> </span>ptitanic[<span class="op">-</span>v_titanic_train,]</code></pre></div>
 <p>Vamos a crear el modelo y entrenarlo</p>
@@ -365,22 +369,22 @@ sobrevive.model &lt;-<span class="st"> </span><span class="kw">rpart</span>(surv
 <span class="co"># ahrora hacemos predicciones sobre el grupo de test</span>
 titanic_test<span class="op">$</span>pred &lt;-<span class="st"> </span><span class="kw">predict</span>(sobrevive.model,titanic_test, <span class="dt">type =</span> <span class="st">&quot;class&quot;</span>)
 <span class="kw">head</span>(titanic_test)</code></pre></div>
-<pre><code>##    pclass survived    sex age sibsp parch     pred
-## 1     1st survived female  29     0     0 survived
-## 5     1st     died female  25     1     2 survived
-## 12    1st survived female  18     1     0 survived
-## 13    1st survived female  24     0     0 survived
-## 16    1st     died   male  NA     0     0     died
-## 22    1st survived female  47     1     1 survived</code></pre>
+<pre><code>##    pclass survived    sex     age sibsp parch     pred
+## 2     1st survived   male  0.9167     1     2 survived
+## 5     1st     died female 25.0000     1     2 survived
+## 6     1st survived   male 48.0000     0     0     died
+## 7     1st survived female 63.0000     1     0 survived
+## 11    1st     died   male 47.0000     1     0     died
+## 13    1st survived female 24.0000     0     0 survived</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Examinamos los resultados con la matriz de confusion</span>
 <span class="kw">table</span>(titanic_test<span class="op">$</span>pred,titanic_test<span class="op">$</span>survived)</code></pre></div>
 <pre><code>##           
 ##            died survived
-##   died      160       35
-##   survived   39       94</code></pre>
+##   died      193       66
+##   survived   10       59</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Calculamos la bondad del modelo sobre el grupo de test</span>
 <span class="dv">100</span><span class="op">*</span><span class="kw">mean</span>(titanic_test<span class="op">$</span>pred<span class="op">==</span>titanic_test<span class="op">$</span>survived)</code></pre></div>
-<pre><code>## [1] 77.43902</code></pre>
+<pre><code>## [1] 76.82927</code></pre>
 <p>Como vemos el 77 % de ajuste es un valor alto, pero no infalible.</p>
 </div>
 <div id="poda-de-los-arboles" class="section level2">

@@ -59,17 +59,17 @@ Tenemos un conjunto de entrenamiento almacenado como `d_titanic_train`. En esta 
 ```
 
 ```
-##      Class    Sex   Age Survived pred
-## 3.1    3rd   Male Child       No    0
-## 3.3    3rd   Male Child       No    0
-## 3.7    3rd   Male Child       No    0
-## 3.8    3rd   Male Child       No    0
-## 3.14   3rd   Male Child       No    0
-## 3.23   3rd   Male Child       No    0
-## 3.31   3rd   Male Child       No    0
-## 3.32   3rd   Male Child       No    0
-## 3.34   3rd   Male Child       No    0
-## 7.1    3rd Female Child       No    1
+##      Class  Sex   Age Survived pred
+## 3.3    3rd Male Child       No    0
+## 3.14   3rd Male Child       No    0
+## 3.15   3rd Male Child       No    0
+## 3.16   3rd Male Child       No    0
+## 3.21   3rd Male Child       No    0
+## 3.23   3rd Male Child       No    0
+## 3.24   3rd Male Child       No    0
+## 3.30   3rd Male Child       No    0
+## 3.32   3rd Male Child       No    0
+## 3.34   3rd Male Child       No    0
 ```
 
 

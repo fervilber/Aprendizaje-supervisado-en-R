@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Regresión logistica binaria {#glm}
 Otro modelo de predicción de aprendizaje supervisado es el de **regresión logística**. Se trata de un tipo de análisis de regresión utilizado para predecir el resultado de una variable categórica (aquella que puede adoptar un número limitado de categorías) en función de las variables predictoras. Este modelo se enmarca dentro de los modelos denominados de *predicción lineal generalizados* o *glm* como son conocidos por sus siglas en inglés.
 
@@ -202,3 +207,64 @@ Veamos el ejemplo:
         plot(ROC, col = "red")
         auc(ROC)
 ```
+
+## glmmTMB
+Existen algunos paquetes específicos de regresión logística para cuando tenemos datos de partida inflados en ceros. Estos casos son más habituales de lo que podemos pensar, pues muchas veces las variables origen tienen media cero con muchos valores cercanos, y lo que buscamos son casos raros fuera del rango habitual (cero).
+
+La librería `library("glmmTMB")` tienes algunas características que mejora este tipo de predicciones, y contiene algoritmos denominados *zero-inflated generalized linear mixed model* o ZIGLMM.
+
+El mejor modelo es el que mejor AIC tiene, para ello tambien es necesario la librería `library("bbmle")`.
+
+
+Veamos un ejemplo, sobre los datos de muestra de mochuelos (owlets) o polluelos de buho (owl chicks). La base de datos aporta las muestras obtenidas en diferentes nidos durante la cria de mochuelos. Los datos miden el número de llamadas que hace el mochuelo antes de que llegue el progenitor con la comida, y almacena además el tiempo que tarda, el tipo de comida, el lugar del nido y otras variables como el sexo de que llegua a alimentar.
+
+Se registra el número total de llamadas desde el nido, junto con el tamaño total de cría, que se utiliza como compensación para permitir el uso de una respuesta de Poisson.
+
+```{r}
+library("glmmTMB")
+library("bbmle")
+summary(Owls)
+
+head(Owls)
+
+```
+
+
+Lo primero es hacer algunas transformaciones en los datos:
+
+    1. reordenamos los nidos por el orden de la media de negociaciones por polluelo (para pintar mejor)
+    2. añadimos un log del tamaño de cria
+    3. renombramos la variable respuesta como NCalls y abreviamos otra FT
+    
+```{r}
+# SiblingNegotiation - negociacion entre hermanos
+# NegPerChick - negativas por polluelo
+Owls <- transform(Owls,Nest=reorder(Nest,NegPerChick),NCalls=SiblingNegotiation,FT=FoodTreatment)
+head(Owls)
+plot(Owls$Nest,Owls$NCalls, col=rainbow(10))
+
+```
+
+Ahora ya podemos hacer el modelo `glmmTMB`. Debemos tener en cuenta que el modelo por defecto usado es un ZIGLMM (ziformula~1), si no queremos usar el inflado de ceros hay que poner (ziformula~0)
+
+
+Para la formulación de los modelos se toma como estandar la especificación desarrollada en el paquete `lme4`, y cuyo resumen puede verse [aquí](http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#model-specification) de forma estructurada.
+
+
+```{r}
+fit_zipoisson <- glmmTMB(NCalls~(FT+ArrivalTime)*SexParent+offset(log(BroodSize))+(1|Nest),data=Owls,ziformula=~1,family=poisson)
+
+confint(fit_zipoisson)
+#summary(fit_zipoisson)
+
+# podemos usar otras aproximaciones 
+fit_zinbinom <- update(fit_zipoisson,family=nbinom2)
+fit_zinbinom1 <- update(fit_zipoisson,family=nbinom1)
+fit_zinbinom1_bs <- update(fit_zinbinom1, . ~ (FT+ArrivalTime)*SexParent+
+BroodSize+(1|Nest))
+
+# y usar el comparador de AIC para ver el mejor modelo
+AICtab(fit_zipoisson,fit_zinbinom,fit_zinbinom1,fit_zinbinom1_bs)
+
+```
+

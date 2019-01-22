@@ -34,10 +34,10 @@ str(t.alturas)
 
 ```
 ## 'data.frame':	1000 obs. of  4 variables:
-##  $ a.padre: int  180 160 170 190 120 170 180 150 180 170 ...
-##  $ a.madre: int  170 150 160 150 140 150 150 140 160 150 ...
-##  $ s.hijo : Factor w/ 2 levels "M","F": 2 1 1 2 2 2 2 1 1 1 ...
-##  $ a.hijo : int  180 150 160 170 130 160 170 140 160 150 ...
+##  $ a.padre: int  160 210 140 180 200 160 190 130 180 180 ...
+##  $ a.madre: int  140 160 160 150 160 150 140 150 160 140 ...
+##  $ s.hijo : Factor w/ 2 levels "M","F": 1 1 2 1 2 1 1 2 1 1 ...
+##  $ a.hijo : int  160 200 160 180 190 170 180 150 180 170 ...
 ```
 
 ```r
@@ -48,16 +48,16 @@ knitr::kable(head(t.alturas,10), "markdown")
 
 | a.padre| a.madre|s.hijo | a.hijo|
 |-------:|-------:|:------|------:|
-|     180|     170|F      |    180|
-|     160|     150|M      |    150|
-|     170|     160|M      |    160|
-|     190|     150|F      |    170|
-|     120|     140|F      |    130|
-|     170|     150|F      |    160|
-|     180|     150|F      |    170|
-|     150|     140|M      |    140|
-|     180|     160|M      |    160|
-|     170|     150|M      |    150|
+|     160|     140|M      |    160|
+|     210|     160|M      |    200|
+|     140|     160|F      |    160|
+|     180|     150|M      |    180|
+|     200|     160|F      |    190|
+|     160|     150|M      |    170|
+|     190|     140|M      |    180|
+|     130|     150|F      |    150|
+|     180|     160|M      |    180|
+|     180|     140|M      |    170|
 
 ```r
 # Crear un modelo de clasificacion  con rpart
@@ -74,6 +74,12 @@ knitr::kable(head(t.alturas,10), "markdown")
                    shadow.col = "gray")
 ```
 
+```
+## Warning: All boxes will be white (the box.palette argument will be ignored) because
+## the number of classes predicted by the model 10 is greater than length(box.palette) 6.
+## To silence this warning use box.palette=0 or trace=-1.
+```
+
 <img src="06-arboles_decision_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
 ```r
@@ -84,8 +90,8 @@ knitr::kable(head(t.alturas,10), "markdown")
 
 ```
 ##   1   2 
-## 160 140 
-## Levels: 110 120 130 140 150 160 170 180 190 200
+## 190 150 
+## Levels: 120 130 140 150 160 170 180 190 200 210
 ```
 
 ### Ejemplo 2
@@ -153,12 +159,12 @@ La función `sample()` es muy útil en la tarea de seleccionar una muestra de te
 
 ```
 ##      pclass survived    sex age sibsp parch
-## 183     1st survived female  30     0     0
-## 960     3rd     died   male  32     0     0
-## 1023    3rd     died   male  NA     0     0
-## 829     3rd     died female  10     5     2
-## 1163    3rd survived   male  NA     0     0
-## 595     2nd     died   male  66     0     0
+## 562     2nd     died   male  59     0     0
+## 1077    3rd     died female  NA     0     0
+## 202     1st     died   male  54     0     0
+## 329     2nd     died   male  34     1     0
+## 1107    3rd     died female  41     0     5
+## 1219    3rd     died   male  30     0     0
 ```
 
 ```r
@@ -179,13 +185,13 @@ head(titanic_test)
 ```
 
 ```
-##    pclass survived    sex age sibsp parch     pred
-## 1     1st survived female  29     0     0 survived
-## 5     1st     died female  25     1     2 survived
-## 12    1st survived female  18     1     0 survived
-## 13    1st survived female  24     0     0 survived
-## 16    1st     died   male  NA     0     0     died
-## 22    1st survived female  47     1     1 survived
+##    pclass survived    sex     age sibsp parch     pred
+## 2     1st survived   male  0.9167     1     2 survived
+## 5     1st     died female 25.0000     1     2 survived
+## 6     1st survived   male 48.0000     0     0     died
+## 7     1st survived female 63.0000     1     0 survived
+## 11    1st     died   male 47.0000     1     0     died
+## 13    1st survived female 24.0000     0     0 survived
 ```
 
 ```r
@@ -196,8 +202,8 @@ table(titanic_test$pred,titanic_test$survived)
 ```
 ##           
 ##            died survived
-##   died      160       35
-##   survived   39       94
+##   died      193       66
+##   survived   10       59
 ```
 
 ```r
@@ -206,7 +212,7 @@ table(titanic_test$pred,titanic_test$survived)
 ```
 
 ```
-## [1] 77.43902
+## [1] 76.82927
 ```
 Como vemos el 77 % de ajuste es un valor alto, pero no infalible.
 

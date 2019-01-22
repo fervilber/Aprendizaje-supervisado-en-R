@@ -126,12 +126,12 @@ En este caso buscamos dividir la tabla en dos conjuntos uno de entrenamiento con
 
 ```
 ##        Class    Sex   Age Survived
-## 11.324   3rd   Male Adult       No
-## 12.613  Crew   Male Adult       No
-## 11.162   3rd   Male Adult       No
-## 15.80    3rd Female Adult       No
-## 15.85    3rd Female Adult       No
-## 27.17    3rd   Male Adult      Yes
+## 23.5     3rd Female Child      Yes
+## 9.30     1st   Male Adult       No
+## 31.33    3rd Female Adult      Yes
+## 11.85    3rd   Male Adult       No
+## 29.66    1st Female Adult      Yes
+## 12.426  Crew   Male Adult       No
 ```
 
 ```r
@@ -142,12 +142,12 @@ En este caso buscamos dividir la tabla en dos conjuntos uno de entrenamiento con
 
 ```
 ##      Class  Sex   Age Survived
+## 3.7    3rd Male Child       No
 ## 3.9    3rd Male Child       No
+## 3.12   3rd Male Child       No
+## 3.16   3rd Male Child       No
 ## 3.19   3rd Male Child       No
 ## 3.21   3rd Male Child       No
-## 3.27   3rd Male Child       No
-## 3.29   3rd Male Child       No
-## 3.32   3rd Male Child       No
 ```
 Usando una formulación simple hemos creado dos conjuntos de muestra aleatorios excluyentes de entrenamiento y muestra.
 
