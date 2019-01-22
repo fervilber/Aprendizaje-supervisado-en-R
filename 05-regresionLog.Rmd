@@ -1,0 +1,204 @@
+# Regresión logistica binaria {#glm}
+Otro modelo de predicción de aprendizaje supervisado es el de **regresión logística**. Se trata de un tipo de análisis de regresión utilizado para predecir el resultado de una variable categórica (aquella que puede adoptar un número limitado de categorías) en función de las variables predictoras. Este modelo se enmarca dentro de los modelos denominados de *predicción lineal generalizados* o *glm* como son conocidos por sus siglas en inglés.
+
+Con el adjetivo binario nos referimos a las predicciones sobre variables binarias o dicotómicas que simplemente tratan de decir si algo es 1 o 0, SI o NO.
+
+Este modelo de pronóstico se usa mucho en variables que se distribuyen en forma de binomial. La binomial es una distribución de probabilidad discreta que cuenta el número de éxitos en una secuencia de *n* ensayos. Si el evento de *éxito* tiene una probabilidad de ocurrencia `p`, la probabilidad del evento contrario -el de *fracaso*- tendrá una probabilidad de $q = 1 - p$. En la distribución binomial se repite el experimento de éxito -fracaso *n* veces, de forma independiente, y se trata de calcular la probabilidad de un determinado número de éxitos *d*, en esas *n* repeticiones $B(n,p)$.
+
+
+La denominación de *logística* se debe precisamente a la forma de la propia función de distribución de probabilidad binomial que presenta un crecimiento exponencial y que se parece a una $S$ y que toma el nombre matemático de función logística $\frac{1}{1+e^{-t}}$.
+
+Esta curva, es una aproximación continua a la función discreta binaria, pues el cambio de 0 a 1 se produce en corto espacio y muy pronunciado. Si usáramos otras funciones como  la lineal para la regresión de datos binarios funcionaría muy mal, pues el ajuste lineal no capta bien la forma de los datos, las dos agrupaciones que buscamos separar o clasificar.
+
+Los modelos de regresión logísticos se generan con la función `glm()` del paquete base R `stats`, de la siguiente manera.
+
+```{r eval=FALSE}
+m <- glm(y ~ x1 + x2 + x3,
+           data = my_dataset,
+           family = "binomial")
+
+prob <- predict(m, test_dataset, type = "response")
+
+pred <- ifelse(prob > 0.50, 1, 0)
+```
+
+Importante reseñar que la predicción se da en **modo de probabilidad**, por lo que para evaluar un pronóstico concreto, se debe establecer qué umbral es el que fija el pronostico 0 o 1. En el caso del ejemplo anterior se ha determinado que para `pred>0,5` el pronostico es 1.
+
+## Construir modelos `glm`
+
+Siguiendo con el uso de la base de datos de ejemplo de supervivientes del Titanic, vamos a crear un modelo logístico que pronostique la variable *Survived*. Podemos ver como se crearon los datos en el apartado de [particiones de los datos](#particiones)
+
+Al igual que todos los modelos de aprendizaje, el modelo se compone de una fórmula, y luego se pronostica con la función `predict()`. En los modelos *glm()*, los únicos argumentos de `predict()` son `response` y `terms`. El primer caso da directamente la probabilidad de la respuesta y el segundo argumento proporciona los coeficientes de cada término en la fórmula. 
+Si solo queremos obtener un valor de predicción usaremos `type = "response"`.
+
+```{r eval=TRUE,echo=FALSE,message=FALSE,warning=FALSE}
+# cargamos los datos
+    data("Titanic")
+# Transformamos los datos wn una dataframe
+    Titanic_df=as.data.frame(Titanic)
+# Creamos una tabla de casos competos a partir de la frecuencia de cada uno
+# Esto repite cada caso el num de veces que se ha dado 
+# según la frecuencia que está en la columna Freq de la tabla.
+    repetir_secuencia=rep.int(seq_len(nrow(Titanic_df)), Titanic_df$Freq) 
+# tenemos una serie con el numero de registro de la tabla original y las veces que se repite # Creamos una nueva tabla repitiendo los casos según el modelo anterior.
+    Titanic_data=Titanic_df[repetir_secuencia,]
+# Ya no necesitamos la columna de frecuencias  y la borramos.
+    Titanic_data$Freq=NULL
+```
+
+
+```{r}
+# Antes hemos cargado los datos del titanic
+# echamos un vistazo a los datos
+    head(Titanic_data)
+    table(Titanic_data$Survived)
+# creamos una partición para crear un conjunto de test y otro de entrenamiento
+    library(caret)
+    set.seed(123)
+# creamos un vector de particion sobre la variable Survived
+# el tamaño de muestra será de 75%
+    trainIndex=createDataPartition(Titanic_data$Survived, p=0.70)$Resample1
+# definimoslos dos conjuntos de muestra
+    d_titanic_train=Titanic_data[trainIndex, ] # conjunto entrenamiento
+    d_titanic_test= Titanic_data[-trainIndex, ] # conjunto de test
+
+```
+Una vez tenemos los conjuntos de test y de aprendizaje creamos el modelo, usando la misma simbología que en el caso de los modelos de naive_bayes.
+La peculiaridad de `glm()` es que tenemos que identificar un umbral de probabilidad a partir del que consideramos el pronostico 0 o 1.
+
+```{r}
+
+    # Construimos el modelo de predicción con la función glm
+    m_glm <- glm(Survived ~ Class+Sex, data = d_titanic_train, family = "binomial")
+    # resumen del modelo
+    summary(m_glm) 
+    
+
+    # vemos las predicciones en el conjunto de test
+    d_titanic_test$pred<-predict(m_glm, d_titanic_test, type= "response")
+
+    # Hacemos el resumen gráfico del resultado    
+        hist(100*d_titanic_test$pred, col="skyblue",
+             main=" resultados modelo glm() sobre datos Titanic test",
+             xlab="Probabilidad en % de supervivencia",
+             ylab="Frecuencia")
+    # Marcamos un umbral en el que consideramos el pronostico como donación
+    # este umbral lo ponemos en un valor del 60%    
+        abline(v= 60,col= "navy", lwd=3)  # marcamos el umbral de supervivencia
+    
+    
+        d_titanic_test$pred_final_60 <- ifelse(d_titanic_test$pred > 0.6, 1, 0)
+        # resumen de resultados
+        table(d_titanic_test$pred_final_60)
+    
+    # podemos calcular el ajuste respecto a los casos reales con esta sencilla formula 
+    # antes vamos a cambiar los levels de survived No=0, Yes=1 
+        table(d_titanic_test$Survived) # vemos cual es el primero ---> No
+        levels(d_titanic_test$Survived) <- c(0,1)
+        mean(d_titanic_test$pred_final_60 == d_titanic_test$Survived)
+        
+```
+
+Como vemos una vez realizado el pronostico podríamos probar diferentes umbrales y ver cual es el que da un mejor resultado con esta metodología.
+
+## curvas ROC y AUC
+Estas curvas nos ayudan a controlar el acierto o no de los modelos cuando uno de los eventos es muy raro. Esto implica que predecir el evento opuesto conlleva un gran porcentaje de aciertos, y en cierta forma falsea la utilidad real de la predicción lo que hay que vigilar y entender.
+
+En estos casos es mejor sacrificar los aciertos generales en favor de concentrarlos sobre uno de los resultados, el más raro, el que buscamos distinguir.
+
+Por lo tanto la exactitud de la predicción general es una medida engañosa en el rendimiento de lo que realmente nos interesa. Este es un caso muy común en predicciones binomiales pues un caso, el de éxito puede tener una probabilidad general mucho menor que el de fracaso, y un porcentaje de acierto elevado, puede no tener importancia, pues lo que nos interesa no es acertar los fracasos sino los éxitos.
+
+Las curvas ROC son buenas para evaluar este problema en conjuntos de datos desequilibrados.
+
+Al hacer una gráfica **ROC** se representa mejor la compensación entre un modelo que es demasiado agresivo y uno que es demasiado pasivo. Lo que interesa es que el área de la curva sea máxima, cercana a 1, por lo que cuanto más se eleve respecto de la linea media mejor.
+
+Estas gráficas se pintan con la libraría `pROC`. Usaremos dos funciones una para pintar la gráfica y otra que calcula el *AUC* o área bajo la curva.
+
+```{r}
+    # Cargamos la libraría de graficos ROC
+    library(pROC)
+    
+    # Creamos una curva ROC basada en el modelo glm anterior
+    ROC_glm60 <- roc(d_titanic_test$Survived, d_titanic_test$pred_final_60)
+    
+    # Pintamos la grafica ROC
+    plot(ROC_glm60, col = "blue")
+    #plot(ROC_naive, col = "red")
+    
+    # Calculamos el area bajo la ROC(AUC)
+    auc(ROC_glm60)
+    
+    d_titanic_test$pred_final_40 <- ifelse(d_titanic_test$pred > 0.4, 1, 0)
+    ROC_glm40 <-roc(d_titanic_test$Survived, d_titanic_test$pred_final_40)
+    # Pintamos la grafica ROC
+    plot(ROC_glm40, col = "red")
+    auc(ROC_glm40)
+```    
+
+Vistos los resultados, el seleccionar un umbral de 40, mejora la predicción de casos positivos de supervivencia.
+
+
+## Modelos de impacto combinado
+
+En las formulaciones de modelos `glm` podemos expresar lo que se denominan impactos combinados o interacciones entre variables. Estos casos se dan cuando el efecto combinado de dos variables es muy importante y superior a la combinación lineal de ellas. Es decir el efecto es exponencial y no lineal sobre la variable a predecir. 
+
+### Ejemplo
+Uno de los mejores predictores de donaciones futuras es el historial de donaciones anteriores y cuanto mas recientes, frecuentes y grandes mejor. En términos de comercialización, esto se conoce como R/F/M (Recency Frequency Money).
+
+Es muy probable que el impacto combinado de reciente y frecuencia puede ser mayor que la suma de los efectos por separado, si uno ha dado dinero a una ONG hace muy poco será poco probable que de otra vez enseguida.
+
+Debido a que estos predictores juntos tienen un mayor impacto en la variable dependiente, su efecto conjunto **debe modelarse como una interacción**. Esto en la formulación del modelo se identifica por un `*` en lugar de un `+`.
+
+```{r}
+# Leemos la tabla de datos
+    donors<-read.csv("donors.csv",header = TRUE)
+    head(donors)
+    str(donors)
+# Construimos un modelo complejo
+    rfm_model <- glm(donated ~ money + recency* frequency ,data = donors,family = "binomial")
+    
+# Resumen del modelo RFM 
+    summary(rfm_model)
+    #summary(rfm_model)$coefficients
+# Calculamos las predicciones del modelo RFM
+    rfm_prob <- predict(rfm_model, type = "response")
+    head(rfm_prob)
+# Pintamos la curva ROC para ver el efecto del modelo y calculamos el area AUC
+    require(pROC)
+    ROC <- roc(donors$donated, rfm_prob)
+    plot(ROC, col = "red")
+    auc(ROC)
+```
+
+## Optimización de un modeloS `glm`
+Cuando a priori no sabemos qué variables tienen más dependencia para crear el modelo una forma de hacerlo es usando la regresión gradual. Esto consiste en aplicar una función que va incrementando las variables y detecta el mejor modelo de regresión.
+
+Para construirlo hacemos lo siguiente:
+
+ 1 creamos un modelo `glm()` sin predictores. se hace estableciendo la variable explicativa igual a 1.
+ 2 Se crea otro modelo con todos las variables usando `~ .`.
+ 3 Se aplica la función `step()` entre ambos modelos para realizar una regresión progresiva hacia adelante. Debe indicarse la dirección con `direction = "forward"`
+ 4 Usamos la función `predict()` sobre la lista de modelos creados con `step`
+
+Veamos el ejemplo:
+
+```{r}
+
+    # 1. Modelo sin predictores
+        null_model <- glm(donated ~1, data = donors, family = "binomial")
+    
+    # 2. modelo completo
+        full_model <- glm(donated ~ ., data = donors, family = "binomial")
+    
+    # 3. funcion step ()
+        step_model <- step(null_model, scope = list(lower = null_model, upper = full_model), direction = "forward")
+        summary(step_model)
+    # estimamos la probabilidad
+        step_prob <- predict(step_model, type = "response")
+    
+    # Pintamos  ROC of the stepwise model
+        library(pROC)
+        ROC <- roc(donors$donated, step_prob)
+        plot(ROC, col = "red")
+        auc(ROC)
+```
