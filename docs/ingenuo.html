@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html  lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Capítulo 5 Naive Bayes- clasificación bayesiano ingenuo | Aprendizaje supervisado en R</title>
+  <meta name="description" content="Describimos algunos modelos de aprendizaje supervisado con R, principalmente redes bayesianas">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Capítulo 5 Naive Bayes- clasificación bayesiano ingenuo | Aprendizaje supervisado en R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://bookdown.org/yihui/bookdown/" />
+  <meta property="og:image" content="https://bookdown.org/yihui/bookdown/imag/cover.jpg" />
+  <meta property="og:description" content="Describimos algunos modelos de aprendizaje supervisado con R, principalmente redes bayesianas" />
+  <meta name="github-repo" content="fervilber/redes_bayesianas_con_R" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 5 Naive Bayes- clasificación bayesiano ingenuo | Aprendizaje supervisado en R" />
+  
+  <meta name="twitter:description" content="Describimos algunos modelos de aprendizaje supervisado con R, principalmente redes bayesianas" />
+  <meta name="twitter:image" content="https://bookdown.org/yihui/bookdown/imag/cover.jpg" />
+
+<meta name="author" content="F. Villalba (fervilber@gmail.com)">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="knn.html">
+<link rel="next" href="glm.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Aprendizaje supervisado en R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introducción</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#antes-de-empezar"><i class="fa fa-check"></i><b>1.1</b> Antes de empezar</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#r"><i class="fa fa-check"></i><b>1.2</b> R</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><i class="fa fa-check"></i><b>2</b> Preparar los datos para el modelo de aprendizaje</a><ul>
+<li class="chapter" data-level="2.1" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#particiones"><i class="fa fa-check"></i><b>2.1</b> Crear particiones de la muestra</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#ejemplo-de-particion-a-mano"><i class="fa fa-check"></i><b>2.1.1</b> Ejemplo de partición a mano</a></li>
+<li class="chapter" data-level="2.1.2" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#ejemplo-de-particion-con-librarycaret"><i class="fa fa-check"></i><b>2.1.2</b> Ejemplo de partición con <code>library(caret)</code></a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#categorizacion-de-los-datos-origen"><i class="fa fa-check"></i><b>2.2</b> Categorización de los datos origen</a></li>
+<li class="chapter" data-level="2.3" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#manejo-de-na"><i class="fa fa-check"></i><b>2.3</b> Manejo de NA</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html"><i class="fa fa-check"></i><b>3</b> Consideraciones previas</a><ul>
+<li class="chapter" data-level="3.1" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#particiones"><i class="fa fa-check"></i><b>3.1</b> Crear particiones de la muestra</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#ejemplo-de-particion-a-mano-1"><i class="fa fa-check"></i><b>3.1.1</b> Ejemplo de partición a mano</a></li>
+<li class="chapter" data-level="3.1.2" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#ejemplo-de-particion-con-librarycaret-1"><i class="fa fa-check"></i><b>3.1.2</b> Ejemplo de partición con <code>library(caret)</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#categorizacion-de-los-datos-origen-1"><i class="fa fa-check"></i><b>3.2</b> Categorización de los datos origen</a></li>
+<li class="chapter" data-level="3.3" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#manejo-de-na-1"><i class="fa fa-check"></i><b>3.3</b> Manejo de NA</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="knn.html"><a href="knn.html"><i class="fa fa-check"></i><b>4</b> k-NN (k-Nearest Neighbour Classification)</a><ul>
+<li class="chapter" data-level="4.1" data-path="knn.html"><a href="knn.html#consideraciones-previas-1"><i class="fa fa-check"></i><b>4.1</b> Consideraciones previas</a></li>
+<li class="chapter" data-level="4.2" data-path="knn.html"><a href="knn.html#ejemplo"><i class="fa fa-check"></i><b>4.2</b> Ejemplo</a></li>
+<li class="chapter" data-level="4.3" data-path="knn.html"><a href="knn.html#estandarizacion"><i class="fa fa-check"></i><b>4.3</b> Estandarización</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ingenuo.html"><a href="ingenuo.html"><i class="fa fa-check"></i><b>5</b> Naive Bayes- clasificación bayesiano ingenuo</a><ul>
+<li class="chapter" data-level="5.1" data-path="ingenuo.html"><a href="ingenuo.html#crear-un-modelo-con-naivebayes"><i class="fa fa-check"></i><b>5.1</b> Crear un modelo con <code>naivebayes</code></a></li>
+<li class="chapter" data-level="5.2" data-path="ingenuo.html"><a href="ingenuo.html#e1072"><i class="fa fa-check"></i><b>5.2</b> e1072</a></li>
+<li class="chapter" data-level="5.3" data-path="ingenuo.html"><a href="ingenuo.html#correccion-de-laplace"><i class="fa fa-check"></i><b>5.3</b> Corrección de laplace</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="glm.html"><a href="glm.html"><i class="fa fa-check"></i><b>6</b> Regresión logistica binaria</a><ul>
+<li class="chapter" data-level="6.1" data-path="glm.html"><a href="glm.html#construir-modelos-glm"><i class="fa fa-check"></i><b>6.1</b> Construir modelos <code>glm</code></a></li>
+<li class="chapter" data-level="6.2" data-path="glm.html"><a href="glm.html#curvas-roc-y-auc"><i class="fa fa-check"></i><b>6.2</b> curvas ROC y AUC</a></li>
+<li class="chapter" data-level="6.3" data-path="glm.html"><a href="glm.html#modelos-de-impacto-combinado"><i class="fa fa-check"></i><b>6.3</b> Modelos de impacto combinado</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="glm.html"><a href="glm.html#ejemplo-1"><i class="fa fa-check"></i><b>6.3.1</b> Ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="glm.html"><a href="glm.html#optimizacion-de-un-modelos-glm"><i class="fa fa-check"></i><b>6.4</b> Optimización de un modeloS <code>glm</code></a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="arboles.html"><a href="arboles.html"><i class="fa fa-check"></i><b>7</b> Árboles de decisión</a><ul>
+<li class="chapter" data-level="7.1" data-path="arboles.html"><a href="arboles.html#rpart"><i class="fa fa-check"></i><b>7.1</b> rpart</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="arboles.html"><a href="arboles.html#ejemplo-2"><i class="fa fa-check"></i><b>7.1.1</b> Ejemplo</a></li>
+<li class="chapter" data-level="7.1.2" data-path="arboles.html"><a href="arboles.html#ejemplo-2-1"><i class="fa fa-check"></i><b>7.1.2</b> Ejemplo 2</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="arboles.html"><a href="arboles.html#overfitting"><i class="fa fa-check"></i><b>7.2</b> overfitting</a></li>
+<li class="chapter" data-level="7.3" data-path="arboles.html"><a href="arboles.html#poda-de-los-arboles"><i class="fa fa-check"></i><b>7.3</b> Poda de los árboles</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="bosques.html"><a href="bosques.html"><i class="fa fa-check"></i><b>8</b> Bosques aleatorios de decisión</a><ul>
+<li class="chapter" data-level="8.1" data-path="bosques.html"><a href="bosques.html#ejemplo-de-bosque-aleatorio"><i class="fa fa-check"></i><b>8.1</b> Ejemplo de bosque aleatorio</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="resumen.html"><a href="resumen.html"><i class="fa fa-check"></i><b>9</b> Resumen</a><ul>
+<li class="chapter" data-level="9.1" data-path="resumen.html"><a href="resumen.html#crear-particiones-en-los-datos"><i class="fa fa-check"></i><b>9.1</b> Crear particiones en los datos</a></li>
+<li class="chapter" data-level="9.2" data-path="resumen.html"><a href="resumen.html#tabla-resumen-de-modelos"><i class="fa fa-check"></i><b>9.2</b> Tabla resumen de modelos</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Aprendizaje supervisado en R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ingenuo" class="section level1">
+<h1><span class="header-section-number">Capítulo 5</span> Naive Bayes- clasificación bayesiano ingenuo</h1>
+<p><em>Naive Bayes</em> es un modelo de predicción basado en la probabilidad Bayesiana. El modelo es muy simple, pero poderoso, en cuanto que es resultado directo de los datos y su tratamiento con simple estadística bayesiana de la probabilidad condicionada. Hay que tener en cuenta que se asume, por simplificación que las variables son todas sucesos independientes.</p>
+<p>La función de clasificación ingenua de bayes se encuentra en varias librerías de R en: <code>naivebayes</code>, en el paquete <code>e1071</code>y en otros.</p>
+<p>El modelo bayesiano de probabilidad condicionada se representa como: <span class="math inline">\(P(A|B) = P(A \cap B) / P(B)\)</span></p>
+<p>Es decir, la probabilidad de que se de el caso <span class="math inline">\(A\)</span> dado <span class="math inline">\(B\)</span> es igual a la probabilidad de la intersección de A con B (<span class="math inline">\(A \cap B\)</span> partido la probabilidad de <span class="math inline">\(B\)</span>.</p>
+<p>Estirando esta formulación llegaríamos al teorema de Bayes cuya expresion mÁs típica es la siguente:</p>
+<p><span class="math inline">\(P(A|B) = PP(B|A)*P(A)/P(B)\)</span></p>
+<div id="crear-un-modelo-con-naivebayes" class="section level2">
+<h2><span class="header-section-number">5.1</span> Crear un modelo con <code>naivebayes</code></h2>
+<p>La <code>tabla_1</code> que vamos a crear contiene 3 variables: la hora del día, el lugar donde está Juan a esa hora, y otra columna que nos indica si es o no fin de semana con un valor lógico (<em>TRUE o FALSE</em>).</p>
+<p>Vamos a crear la tabla para el ejemplo:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># leemos la base de datos</span>
+<span class="co"># tabla_1&lt;-read.csv(&quot;tabla_1.csv&quot;,header = TRUE)</span>
+
+<span class="co"># vamos a crear el ejemplo de cero: CREAMOS UNA TABLA DE DATOS</span>
+tabla_<span class="dv">1</span>&lt;-<span class="kw">data.frame</span>(<span class="dt">hora=</span><span class="kw">c</span>(<span class="dv">8</span>,<span class="dv">14</span>,<span class="dv">24</span>,<span class="dv">8</span>,<span class="dv">14</span>,<span class="dv">24</span>,<span class="dv">8</span>,<span class="dv">14</span>,<span class="dv">24</span>,<span class="dv">8</span>,<span class="dv">14</span>,<span class="dv">24</span>,<span class="dv">8</span>,<span class="dv">14</span>,<span class="dv">24</span>,<span class="dv">8</span>,<span class="dv">14</span>,<span class="dv">24</span>,<span class="dv">24</span>,<span class="dv">24</span>))
+tabla_<span class="dv">1</span><span class="op">$</span>lugar&lt;-<span class="kw">c</span>(<span class="st">&quot;casa&quot;</span>,<span class="st">&quot;restaurante&quot;</span>,<span class="st">&quot;casa&quot;</span>,
+                 <span class="st">&quot;trabajo&quot;</span>,<span class="st">&quot;trabajo&quot;</span>,<span class="st">&quot;casa&quot;</span>,
+                 <span class="st">&quot;trabajo&quot;</span>,<span class="st">&quot;trabajo&quot;</span>,<span class="st">&quot;casa&quot;</span>,
+                 <span class="st">&quot;casa&quot;</span>,<span class="st">&quot;restaurante&quot;</span>,<span class="st">&quot;casa&quot;</span>,
+                 <span class="st">&quot;trabajo&quot;</span>,<span class="st">&quot;trabajo&quot;</span>,<span class="st">&quot;casa&quot;</span>,
+                 <span class="st">&quot;casa&quot;</span>,<span class="st">&quot;restaurante&quot;</span>,<span class="st">&quot;casa&quot;</span>,<span class="st">&quot;cine&quot;</span>,<span class="st">&quot;cine&quot;</span>)
+tabla_<span class="dv">1</span><span class="op">$</span>finde&lt;-<span class="kw">c</span>(T,T,T,
+                 F,F,F,
+                 F,F,F,
+                 T,T,T,
+                 F,F,F,
+                 T,T,T,
+                 T,F
+                )
+<span class="kw">str</span>(tabla_<span class="dv">1</span>)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    20 obs. of  3 variables:
+##  $ hora : num  8 14 24 8 14 24 8 14 24 8 ...
+##  $ lugar: chr  &quot;casa&quot; &quot;restaurante&quot; &quot;casa&quot; &quot;trabajo&quot; ...
+##  $ finde: logi  TRUE TRUE TRUE FALSE FALSE FALSE ...</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(tabla_<span class="dv">1</span>)</code></pre></div>
+<pre><code>##   hora       lugar finde
+## 1    8        casa  TRUE
+## 2   14 restaurante  TRUE
+## 3   24        casa  TRUE
+## 4    8     trabajo FALSE
+## 5   14     trabajo FALSE
+## 6   24        casa FALSE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># vemos como ejemplo el numero de registros de hora según el lugar</span>
+<span class="kw">table</span>(tabla_<span class="dv">1</span><span class="op">$</span>hora,tabla_<span class="dv">1</span><span class="op">$</span>lugar)</code></pre></div>
+<pre><code>##     
+##      casa cine restaurante trabajo
+##   8     3    0           0       3
+##   14    0    0           3       3
+##   24    6    2           0       0</code></pre>
+<p>Como vemos, es una tabla con 20 regisros y 3 variables en columnas, sobre la que queremos practicar pronósticos bayesianos de probabilidad condicionada.</p>
+<p>Vamos cargar la librería <code>naivebayes</code> con objeto de crear un modelo de pronóstico de la variable dependiente <code>lugar</code> a partir de las variables independientes <code>hora</code> y <code>finde</code>. Este modelo nos diría por ejemplo la probabilidad de que: sabiendo la hora y si es o no fin de semana, Juan se encuentre en un lugar determinado.</p>
+<p>Como vimos en las consideraciones previas, los modelos de pronostico bayesiano, y en particular <code>naivebayes</code> funcionan muy mal con datos numéricos continuos, y vamos a ver la prueba, pues crearemos un modelo con la variable hora tal cual, y despues haremos el mismo modelo con la variable hora convertida en factor.</p>
+<p>Primero creamos la formula de modelo con la función <code>naive_bayes()</code> y luego definimos un hecho, una ocurrencia concreta de los parámetros y llamamos a la función <code>predict()</code>.</p>
+<p>Esta función es común a la mayoría de los modelos de predictivos, y sus argumentos son el nombre del modelo y un hecho almacenado como data.frame. Si añadimos el argumento <code>type=&quot;prob</code> nos da el resultado como pronostico probabilistico y si no, solo el pronóstico más probable.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># cargamos la librería    </span>
+    <span class="kw">library</span>(naivebayes)
+<span class="co"># creamos el modelo de pronostico</span>
+    m &lt;-<span class="st"> </span><span class="kw">naive_bayes</span>(lugar <span class="op">~</span><span class="st"> </span>hora<span class="op">+</span>finde, <span class="dt">data =</span> tabla_<span class="dv">1</span>)<span class="co">#, laplace = 1)</span>
+
+    <span class="co"># representamos graficamente el modelo</span>
+    <span class="kw">plot</span>(m)</code></pre></div>
+<p><img src="04-naive_bayes_files/figure-html/nav2-1.png" width="672" /><img src="04-naive_bayes_files/figure-html/nav2-2.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ejecutando predict(modelo) tenemos los resultados de pronostico para cada registro de datos</span>
+    tabla_<span class="dv">1</span><span class="op">$</span>p=<span class="kw">predict</span>(m)    
+    <span class="kw">head</span>(tabla_<span class="dv">1</span>)</code></pre></div>
+<pre><code>##   hora       lugar finde           p
+## 1    8        casa  TRUE        casa
+## 2   14 restaurante  TRUE restaurante
+## 3   24        casa  TRUE        cine
+## 4    8     trabajo FALSE     trabajo
+## 5   14     trabajo FALSE     trabajo
+## 6   24        casa FALSE        cine</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># pero si queremos un hecho concreto:        </span>
+<span class="co"># creamos un hecho a priori, sobre el que queremos pronosticar el resultado</span>
+<span class="co"># como el modelo es  lugar ~ hora+finde, aportamos un dato de hora y otro de finde</span>
+<span class="co"># en este caso queremos pronosticar donde se encuentra Juan a las 14 horas un día laborable</span>
+    h&lt;-<span class="kw">data.frame</span>(<span class="dt">hora=</span> <span class="dv">24</span>, <span class="dt">finde=</span>T)
+    <span class="kw">table</span>(tabla_<span class="dv">1</span><span class="op">$</span>lugar,tabla_<span class="dv">1</span><span class="op">$</span>hora<span class="op">+</span>tabla_<span class="dv">1</span><span class="op">$</span>finde)</code></pre></div>
+<pre><code>##              
+##               8 9 14 15 24 25
+##   casa        0 3  0  0  3  3
+##   cine        0 0  0  0  1  1
+##   restaurante 0 0  0  3  0  0
+##   trabajo     3 0  3  0  0  0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># llamamos a la función de predición</span>
+    <span class="kw">predict</span>(m,h) </code></pre></div>
+<pre><code>## [1] cine
+## Levels: casa cine restaurante trabajo</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># idam con la probabilidad completa</span>
+    <span class="kw">predict</span>(m,h, <span class="dt">type =</span> <span class="st">&quot;prob&quot;</span>)</code></pre></div>
+<pre><code>##              casa      cine  restaurante trabajo
+## [1,] 0.0006001881 0.9993923 7.515315e-06     NaN</code></pre>
+<p>La predicción que obtenemos con el modelo para <em>(hora= 24, finde=T)</em> es claramente erronea, pues solo 1 de los 4 registros que tenemos a las 24 horas en fin de semana es <code>ir al cine</code>, los otros 3 son <code>estar en casa</code>, por lo que algo falla en el modelo al ser el evento más probable <code>estar en casa</code>.</p>
+<p>Este problema es habitual cuando usamos datos continuos, que nos generan distribuciones de probabilidad continuas. En este caso el evento de ir al cine tiene muy pocos datos, pero siempre a las 24 horas, por lo que la media se mantiene en 24 h. Sin embargo el hecho estar en casa tienen muchos registros en diferentes horas, por lo que el valor medio de la hora es un número intermedio 18,6 (ver el modelo m para más información).</p>
+<p>Para evitar problemas debemos transformar las variables continuas en discretas y reducir al máximo los valores posibles realizando lo que denominamos una categorización previa de los datos. Por ejemplo convietiendo los datos en factores.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Convertimos la variable continua numerica hora, en factor discreto</span>
+    tabla_<span class="dv">1</span><span class="op">$</span>hora&lt;-<span class="kw">as.factor</span>(tabla_<span class="dv">1</span><span class="op">$</span>hora)
+    <span class="kw">str</span>(tabla_<span class="dv">1</span>)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    20 obs. of  4 variables:
+##  $ hora : Factor w/ 3 levels &quot;8&quot;,&quot;14&quot;,&quot;24&quot;: 1 2 3 1 2 3 1 2 3 1 ...
+##  $ lugar: chr  &quot;casa&quot; &quot;restaurante&quot; &quot;casa&quot; &quot;trabajo&quot; ...
+##  $ finde: logi  TRUE TRUE TRUE FALSE FALSE FALSE ...
+##  $ p    : Factor w/ 4 levels &quot;casa&quot;,&quot;cine&quot;,..: 1 3 2 4 4 2 4 4 2 1 ...</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># calculamos de nuevo el modelo ahora</span>
+    m &lt;-<span class="st"> </span><span class="kw">naive_bayes</span>(lugar <span class="op">~</span><span class="st"> </span>hora<span class="op">+</span>finde, <span class="dt">data =</span> tabla_<span class="dv">1</span>)
+<span class="co"># Hacemos de nuevo la predicción</span>
+    <span class="kw">predict</span>(m,h)</code></pre></div>
+<pre><code>## [1] casa
+## Levels: casa cine restaurante trabajo</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">predict</span>(m,h, <span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)</code></pre></div>
+<pre><code>##           casa      cine   restaurante trabajo
+## [1,] 0.8571429 0.1428571 1.432592e-123     NaN</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># ojo al crear el hecho que debe ser acorde a los datos, </span>
+<span class="co"># si es factor debe contener en levels los mismos que la tabla origen</span>
+<span class="co"># por ello lo creamos a partir de esta tabla mejor    </span>
+    h&lt;-tabla_<span class="dv">1</span>[<span class="dv">1</span>,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)]
+        h<span class="op">$</span>hora=<span class="st">&quot;24&quot;</span>
+        h<span class="op">$</span>finde=F
+    <span class="kw">predict</span>(m,h)</code></pre></div>
+<pre><code>## [1] casa
+## Levels: casa cine restaurante trabajo</code></pre>
+<p>Como hemos visto al transformar en factor la variable numérica continua, hemos realizado un pronostico más acorde con los datos.</p>
+</div>
+<div id="e1072" class="section level2">
+<h2><span class="header-section-number">5.2</span> e1072</h2>
+<p>Vamos a probar otro paquete que contienen a naive_Bayes el <code>e1071</code>. Usaremos los datos de supervivientes del Titanic que vienen en los datasets de R por defecto. La tabla de datos tiene 32 filas pero en realidad esconde en la columna <em>freq</em> el número de repeticiones de cada caso, por lo que el primer paso es crear una tabla completa.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">library</span>(e1071)
+    <span class="co">#Cargamos los datos del Titanic dese datasets</span>
+    <span class="kw">data</span>(<span class="st">&quot;Titanic&quot;</span>)
+    <span class="co">#Los almacenamos en un data frame</span>
+    Titanic_df=<span class="kw">as.data.frame</span>(Titanic)
+    <span class="kw">str</span>(Titanic_df)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    32 obs. of  5 variables:
+##  $ Class   : Factor w/ 4 levels &quot;1st&quot;,&quot;2nd&quot;,&quot;3rd&quot;,..: 1 2 3 4 1 2 3 4 1 2 ...
+##  $ Sex     : Factor w/ 2 levels &quot;Male&quot;,&quot;Female&quot;: 1 1 1 1 2 2 2 2 1 1 ...
+##  $ Age     : Factor w/ 2 levels &quot;Child&quot;,&quot;Adult&quot;: 1 1 1 1 1 1 1 1 2 2 ...
+##  $ Survived: Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Freq    : num  0 0 35 0 0 0 17 0 118 154 ...</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co">#Creamos una tabla de casos competos a partir de la frecuencia de cada uno</span>
+    repeating_sequence=<span class="kw">rep.int</span>(<span class="kw">seq_len</span>(<span class="kw">nrow</span>(Titanic_df)), Titanic_df<span class="op">$</span>Freq) 
+    <span class="co">#Esto repite cada caso según la frecuencia dada en la col de la tabla.</span>
+    
+    <span class="co">#Creamos una nueva tabla repitiendo los casos según el modelo anterior.</span>
+    Titanic_dataset=Titanic_df[repeating_sequence,]
+    <span class="co">#Ya no necesitamos la tabla de frecuencias más.</span>
+    Titanic_dataset<span class="op">$</span>Freq=<span class="ot">NULL</span>
+    <span class="kw">head</span>(Titanic_dataset)</code></pre></div>
+<pre><code>##     Class  Sex   Age Survived
+## 3     3rd Male Child       No
+## 3.1   3rd Male Child       No
+## 3.2   3rd Male Child       No
+## 3.3   3rd Male Child       No
+## 3.4   3rd Male Child       No
+## 3.5   3rd Male Child       No</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># todo son factores</span>
+    <span class="kw">str</span>(Titanic_dataset)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    2201 obs. of  4 variables:
+##  $ Class   : Factor w/ 4 levels &quot;1st&quot;,&quot;2nd&quot;,&quot;3rd&quot;,..: 3 3 3 3 3 3 3 3 3 3 ...
+##  $ Sex     : Factor w/ 2 levels &quot;Male&quot;,&quot;Female&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Age     : Factor w/ 2 levels &quot;Child&quot;,&quot;Adult&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Survived: Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># Ajustamos un modelo de naive bayes con la librería e1071</span>
+        m.e1071 &lt;-<span class="st"> </span><span class="kw">naiveBayes</span>(Survived <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> Titanic_dataset)
+        m.e1071 <span class="co"># vemos el modelo</span></code></pre></div>
+<pre><code>## 
+## Naive Bayes Classifier for Discrete Predictors
+## 
+## Call:
+## naiveBayes.default(x = X, y = Y, laplace = laplace)
+## 
+## A-priori probabilities:
+## Y
+##       No      Yes 
+## 0.676965 0.323035 
+## 
+## Conditional probabilities:
+##      Class
+## Y            1st        2nd        3rd       Crew
+##   No  0.08187919 0.11208054 0.35436242 0.45167785
+##   Yes 0.28551336 0.16596343 0.25035162 0.29817159
+## 
+##      Sex
+## Y           Male     Female
+##   No  0.91543624 0.08456376
+##   Yes 0.51617440 0.48382560
+## 
+##      Age
+## Y          Child      Adult
+##   No  0.03489933 0.96510067
+##   Yes 0.08016878 0.91983122</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># realizamos la prediccion con el modelo</span>
+    predicciones.m&lt;-<span class="kw">predict</span>(m.e1071,Titanic_dataset)
+    
+    <span class="co"># Matriz de confusión </span>
+    <span class="kw">table</span>(predicciones.m,Titanic_dataset<span class="op">$</span>Survived)</code></pre></div>
+<pre><code>##               
+## predicciones.m   No  Yes
+##            No  1364  362
+##            Yes  126  349</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    hecho&lt;-<span class="kw">data.frame</span>(<span class="dt">Class=</span><span class="st">&quot;1rd&quot;</span>,<span class="dt">Sex=</span><span class="st">&quot;Female&quot;</span>,<span class="dt">Age=</span><span class="st">&quot;Child&quot;</span>)
+    <span class="kw">predict</span>(m.e1071,hecho)</code></pre></div>
+<pre><code>## [1] Yes
+## Levels: No Yes</code></pre>
+</div>
+<div id="correccion-de-laplace" class="section level2">
+<h2><span class="header-section-number">5.3</span> Corrección de laplace</h2>
+<p>En muchas ocasiones los datos no contienen muestras a priori de todas las combinaciones de variables posibles, por lo que las probabilidades de casos raros salen excesivamente bajas. Para corregir esto el modelo <code>naiveBayes</code> tiene la opción de añadir en la fórmula el argumento de <code>laplace=1</code>, en el que indicamos que, al menos, se debe contar con una aparición de cada posible combinación de factores. Este parámetro se puede aumentar a criterio del investigador, y permite incorporar casos raros dentro del pronóstico que de otra forma, por la simplificación del modelo de Bayes, darían probabilidad cero.</p>
+<p>Por ejemplo en los datos de Juan y la ubicación según las horas, no tenemos ningún registro de que vaya a trabajar en fin de semana, pero eso no significa que no tengamos cierta probabilidad, lo que se podría solventar añadiendo al modelo <code>laplace=1</code>.</p>
+<p>Veamos los cambios al reformular el modelo con <em>laplace</em>. Gráficamente se aprecia que, por ejemplo, la probabilidad de ir a restaurante entre semana pasa de cero a una cantidad pequeña, y de trabajar el fin de semana igual (pasa de cero a una proporción).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># cargamos la librería    </span>
+    <span class="kw">require</span>(naivebayes)
+<span class="co"># Modelo de pronostico sin laplace</span>
+    m &lt;-<span class="st"> </span><span class="kw">naive_bayes</span>(lugar <span class="op">~</span><span class="st"> </span>hora<span class="op">+</span>finde, <span class="dt">data =</span> tabla_<span class="dv">1</span>)
+    <span class="kw">plot</span>(m)</code></pre></div>
+<p><img src="04-naive_bayes_files/figure-html/unnamed-chunk-2-1.png" width="672" /><img src="04-naive_bayes_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># cambiamos el modelo añadiendo laplace con al menos una ocurencia por evento</span>
+    m1 &lt;-<span class="st"> </span><span class="kw">naive_bayes</span>(lugar <span class="op">~</span><span class="st"> </span>hora<span class="op">+</span>finde, <span class="dt">data =</span> tabla_<span class="dv">1</span>, <span class="dt">laplace=</span><span class="dv">1</span>)
+    <span class="kw">plot</span>(m1)</code></pre></div>
+<p><img src="04-naive_bayes_files/figure-html/unnamed-chunk-2-3.png" width="672" /><img src="04-naive_bayes_files/figure-html/unnamed-chunk-2-4.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># ¿ donde está Juan si son las 14 horas en fin de semana?</span>
+    h<span class="op">$</span>hora=<span class="dv">8</span>
+    h<span class="op">$</span>finde=T
+    <span class="kw">predict</span>(m,h,<span class="dt">type=</span><span class="st">&quot;prob&quot;</span>) </code></pre></div>
+<pre><code>##           casa      cine  restaurante trabajo
+## [1,] 0.8571429 0.1428571 2.165259e-12     NaN</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">predict</span>(m1,h,<span class="dt">type=</span><span class="st">&quot;prob&quot;</span>) </code></pre></div>
+<pre><code>##           casa      cine restaurante      trabajo
+## [1,] 0.8790698 0.1209302 1.91539e-39 4.420521e-77</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="knn.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="glm.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/04-naive_bayes.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["Aprendizaje supervisado en R.pdf", "Aprendizaje supervisado en R.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

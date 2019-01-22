@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html  lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Capítulo 6 Regresión logistica binaria | Aprendizaje supervisado en R</title>
+  <meta name="description" content="Describimos algunos modelos de aprendizaje supervisado con R, principalmente redes bayesianas">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Capítulo 6 Regresión logistica binaria | Aprendizaje supervisado en R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://bookdown.org/yihui/bookdown/" />
+  <meta property="og:image" content="https://bookdown.org/yihui/bookdown/imag/cover.jpg" />
+  <meta property="og:description" content="Describimos algunos modelos de aprendizaje supervisado con R, principalmente redes bayesianas" />
+  <meta name="github-repo" content="fervilber/redes_bayesianas_con_R" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 6 Regresión logistica binaria | Aprendizaje supervisado en R" />
+  
+  <meta name="twitter:description" content="Describimos algunos modelos de aprendizaje supervisado con R, principalmente redes bayesianas" />
+  <meta name="twitter:image" content="https://bookdown.org/yihui/bookdown/imag/cover.jpg" />
+
+<meta name="author" content="F. Villalba (fervilber@gmail.com)">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="ingenuo.html">
+<link rel="next" href="arboles.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Aprendizaje supervisado en R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introducción</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#antes-de-empezar"><i class="fa fa-check"></i><b>1.1</b> Antes de empezar</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#r"><i class="fa fa-check"></i><b>1.2</b> R</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><i class="fa fa-check"></i><b>2</b> Preparar los datos para el modelo de aprendizaje</a><ul>
+<li class="chapter" data-level="2.1" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#particiones"><i class="fa fa-check"></i><b>2.1</b> Crear particiones de la muestra</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#ejemplo-de-particion-a-mano"><i class="fa fa-check"></i><b>2.1.1</b> Ejemplo de partición a mano</a></li>
+<li class="chapter" data-level="2.1.2" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#ejemplo-de-particion-con-librarycaret"><i class="fa fa-check"></i><b>2.1.2</b> Ejemplo de partición con <code>library(caret)</code></a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#categorizacion-de-los-datos-origen"><i class="fa fa-check"></i><b>2.2</b> Categorización de los datos origen</a></li>
+<li class="chapter" data-level="2.3" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#manejo-de-na"><i class="fa fa-check"></i><b>2.3</b> Manejo de NA</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html"><i class="fa fa-check"></i><b>3</b> Consideraciones previas</a><ul>
+<li class="chapter" data-level="3.1" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#particiones"><i class="fa fa-check"></i><b>3.1</b> Crear particiones de la muestra</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#ejemplo-de-particion-a-mano-1"><i class="fa fa-check"></i><b>3.1.1</b> Ejemplo de partición a mano</a></li>
+<li class="chapter" data-level="3.1.2" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#ejemplo-de-particion-con-librarycaret-1"><i class="fa fa-check"></i><b>3.1.2</b> Ejemplo de partición con <code>library(caret)</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#categorizacion-de-los-datos-origen-1"><i class="fa fa-check"></i><b>3.2</b> Categorización de los datos origen</a></li>
+<li class="chapter" data-level="3.3" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#manejo-de-na-1"><i class="fa fa-check"></i><b>3.3</b> Manejo de NA</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="knn.html"><a href="knn.html"><i class="fa fa-check"></i><b>4</b> k-NN (k-Nearest Neighbour Classification)</a><ul>
+<li class="chapter" data-level="4.1" data-path="knn.html"><a href="knn.html#consideraciones-previas-1"><i class="fa fa-check"></i><b>4.1</b> Consideraciones previas</a></li>
+<li class="chapter" data-level="4.2" data-path="knn.html"><a href="knn.html#ejemplo"><i class="fa fa-check"></i><b>4.2</b> Ejemplo</a></li>
+<li class="chapter" data-level="4.3" data-path="knn.html"><a href="knn.html#estandarizacion"><i class="fa fa-check"></i><b>4.3</b> Estandarización</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ingenuo.html"><a href="ingenuo.html"><i class="fa fa-check"></i><b>5</b> Naive Bayes- clasificación bayesiano ingenuo</a><ul>
+<li class="chapter" data-level="5.1" data-path="ingenuo.html"><a href="ingenuo.html#crear-un-modelo-con-naivebayes"><i class="fa fa-check"></i><b>5.1</b> Crear un modelo con <code>naivebayes</code></a></li>
+<li class="chapter" data-level="5.2" data-path="ingenuo.html"><a href="ingenuo.html#e1072"><i class="fa fa-check"></i><b>5.2</b> e1072</a></li>
+<li class="chapter" data-level="5.3" data-path="ingenuo.html"><a href="ingenuo.html#correccion-de-laplace"><i class="fa fa-check"></i><b>5.3</b> Corrección de laplace</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="glm.html"><a href="glm.html"><i class="fa fa-check"></i><b>6</b> Regresión logistica binaria</a><ul>
+<li class="chapter" data-level="6.1" data-path="glm.html"><a href="glm.html#construir-modelos-glm"><i class="fa fa-check"></i><b>6.1</b> Construir modelos <code>glm</code></a></li>
+<li class="chapter" data-level="6.2" data-path="glm.html"><a href="glm.html#curvas-roc-y-auc"><i class="fa fa-check"></i><b>6.2</b> curvas ROC y AUC</a></li>
+<li class="chapter" data-level="6.3" data-path="glm.html"><a href="glm.html#modelos-de-impacto-combinado"><i class="fa fa-check"></i><b>6.3</b> Modelos de impacto combinado</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="glm.html"><a href="glm.html#ejemplo-1"><i class="fa fa-check"></i><b>6.3.1</b> Ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="glm.html"><a href="glm.html#optimizacion-de-un-modelos-glm"><i class="fa fa-check"></i><b>6.4</b> Optimización de un modeloS <code>glm</code></a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="arboles.html"><a href="arboles.html"><i class="fa fa-check"></i><b>7</b> Árboles de decisión</a><ul>
+<li class="chapter" data-level="7.1" data-path="arboles.html"><a href="arboles.html#rpart"><i class="fa fa-check"></i><b>7.1</b> rpart</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="arboles.html"><a href="arboles.html#ejemplo-2"><i class="fa fa-check"></i><b>7.1.1</b> Ejemplo</a></li>
+<li class="chapter" data-level="7.1.2" data-path="arboles.html"><a href="arboles.html#ejemplo-2-1"><i class="fa fa-check"></i><b>7.1.2</b> Ejemplo 2</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="arboles.html"><a href="arboles.html#overfitting"><i class="fa fa-check"></i><b>7.2</b> overfitting</a></li>
+<li class="chapter" data-level="7.3" data-path="arboles.html"><a href="arboles.html#poda-de-los-arboles"><i class="fa fa-check"></i><b>7.3</b> Poda de los árboles</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="bosques.html"><a href="bosques.html"><i class="fa fa-check"></i><b>8</b> Bosques aleatorios de decisión</a><ul>
+<li class="chapter" data-level="8.1" data-path="bosques.html"><a href="bosques.html#ejemplo-de-bosque-aleatorio"><i class="fa fa-check"></i><b>8.1</b> Ejemplo de bosque aleatorio</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="resumen.html"><a href="resumen.html"><i class="fa fa-check"></i><b>9</b> Resumen</a><ul>
+<li class="chapter" data-level="9.1" data-path="resumen.html"><a href="resumen.html#crear-particiones-en-los-datos"><i class="fa fa-check"></i><b>9.1</b> Crear particiones en los datos</a></li>
+<li class="chapter" data-level="9.2" data-path="resumen.html"><a href="resumen.html#tabla-resumen-de-modelos"><i class="fa fa-check"></i><b>9.2</b> Tabla resumen de modelos</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Aprendizaje supervisado en R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="glm" class="section level1">
+<h1><span class="header-section-number">Capítulo 6</span> Regresión logistica binaria</h1>
+<p>Otro modelo de predicción de aprendizaje supervisado es el de <strong>regresión logística</strong>. Se trata de un tipo de análisis de regresión utilizado para predecir el resultado de una variable categórica (aquella que puede adoptar un número limitado de categorías) en función de las variables predictoras. Este modelo se enmarca dentro de los modelos denominados de <em>predicción lineal generalizados</em> o <em>glm</em> como son conocidos por sus siglas en inglés.</p>
+<p>Con el adjetivo binario nos referimos a las predicciones sobre variables binarias o dicotómicas que simplemente tratan de decir si algo es 1 o 0, SI o NO.</p>
+<p>Este modelo de pronóstico se usa mucho en variables que se distribuyen en forma de binomial. La binomial es una distribución de probabilidad discreta que cuenta el número de éxitos en una secuencia de <em>n</em> ensayos. Si el evento de <em>éxito</em> tiene una probabilidad de ocurrencia <code>p</code>, la probabilidad del evento contrario -el de <em>fracaso</em>- tendrá una probabilidad de <span class="math inline">\(q = 1 - p\)</span>. En la distribución binomial se repite el experimento de éxito -fracaso <em>n</em> veces, de forma independiente, y se trata de calcular la probabilidad de un determinado número de éxitos <em>d</em>, en esas <em>n</em> repeticiones <span class="math inline">\(B(n,p)\)</span>.</p>
+<p>La denominación de <em>logística</em> se debe precisamente a la forma de la propia función de distribución de probabilidad binomial que presenta un crecimiento exponencial y que se parece a una <span class="math inline">\(S\)</span> y que toma el nombre matemático de función logística <span class="math inline">\(\frac{1}{1+e^{-t}}\)</span>.</p>
+<p>Esta curva, es una aproximación continua a la función discreta binaria, pues el cambio de 0 a 1 se produce en corto espacio y muy pronunciado. Si usáramos otras funciones como la lineal para la regresión de datos binarios funcionaría muy mal, pues el ajuste lineal no capta bien la forma de los datos, las dos agrupaciones que buscamos separar o clasificar.</p>
+<p>Los modelos de regresión logísticos se generan con la función <code>glm()</code> del paquete base R <code>stats</code>, de la siguiente manera.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">glm</span>(y <span class="op">~</span><span class="st"> </span>x1 <span class="op">+</span><span class="st"> </span>x2 <span class="op">+</span><span class="st"> </span>x3,
+           <span class="dt">data =</span> my_dataset,
+           <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)
+
+prob &lt;-<span class="st"> </span><span class="kw">predict</span>(m, test_dataset, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)
+
+pred &lt;-<span class="st"> </span><span class="kw">ifelse</span>(prob <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.50</span>, <span class="dv">1</span>, <span class="dv">0</span>)</code></pre></div>
+<p>Importante reseñar que la predicción se da en <strong>modo de probabilidad</strong>, por lo que para evaluar un pronóstico concreto, se debe establecer qué umbral es el que fija el pronostico 0 o 1. En el caso del ejemplo anterior se ha determinado que para <code>pred&gt;0,5</code> el pronostico es 1.</p>
+<div id="construir-modelos-glm" class="section level2">
+<h2><span class="header-section-number">6.1</span> Construir modelos <code>glm</code></h2>
+<p>Siguiendo con el uso de la base de datos de ejemplo de supervivientes del Titanic, vamos a crear un modelo logístico que pronostique la variable <em>Survived</em>. Podemos ver como se crearon los datos en el apartado de <a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#particiones">particiones de los datos</a></p>
+<p>Al igual que todos los modelos de aprendizaje, el modelo se compone de una fórmula, y luego se pronostica con la función <code>predict()</code>. En los modelos <em>glm()</em>, los únicos argumentos de <code>predict()</code> son <code>response</code> y <code>terms</code>. El primer caso da directamente la probabilidad de la respuesta y el segundo argumento proporciona los coeficientes de cada término en la fórmula. Si solo queremos obtener un valor de predicción usaremos <code>type = &quot;response&quot;</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Antes hemos cargado los datos del titanic</span>
+<span class="co"># echamos un vistazo a los datos</span>
+    <span class="kw">head</span>(Titanic_data)</code></pre></div>
+<pre><code>##     Class  Sex   Age Survived
+## 3     3rd Male Child       No
+## 3.1   3rd Male Child       No
+## 3.2   3rd Male Child       No
+## 3.3   3rd Male Child       No
+## 3.4   3rd Male Child       No
+## 3.5   3rd Male Child       No</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">table</span>(Titanic_data<span class="op">$</span>Survived)</code></pre></div>
+<pre><code>## 
+##   No  Yes 
+## 1490  711</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># creamos una partición para crear un conjunto de test y otro de entrenamiento</span>
+    <span class="kw">library</span>(caret)</code></pre></div>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Loading required package: ggplot2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">set.seed</span>(<span class="dv">123</span>)
+<span class="co"># creamos un vector de particion sobre la variable Survived</span>
+<span class="co"># el tamaño de muestra será de 75%</span>
+    trainIndex=<span class="kw">createDataPartition</span>(Titanic_data<span class="op">$</span>Survived, <span class="dt">p=</span><span class="fl">0.70</span>)<span class="op">$</span>Resample1
+<span class="co"># definimoslos dos conjuntos de muestra</span>
+    d_titanic_train=Titanic_data[trainIndex, ] <span class="co"># conjunto entrenamiento</span>
+    d_titanic_test=<span class="st"> </span>Titanic_data[<span class="op">-</span>trainIndex, ] <span class="co"># conjunto de test</span></code></pre></div>
+<p>Una vez tenemos los conjuntos de test y de aprendizaje creamos el modelo, usando la misma simbología que en el caso de los modelos de naive_bayes. La peculiaridad de <code>glm()</code> es que tenemos que identificar un umbral de probabilidad a partir del que consideramos el pronostico 0 o 1.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># Construimos el modelo de predicción con la función glm</span>
+    m_glm &lt;-<span class="st"> </span><span class="kw">glm</span>(Survived <span class="op">~</span><span class="st"> </span>Class<span class="op">+</span>Sex, <span class="dt">data =</span> d_titanic_train, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)
+    <span class="co"># resumen del modelo</span>
+    <span class="kw">summary</span>(m_glm) </code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = Survived ~ Class + Sex, family = &quot;binomial&quot;, data = d_titanic_train)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.1346  -0.7499  -0.4644   0.7435   2.1356  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)  -0.2856     0.1678  -1.702   0.0888 .  
+## Class2nd     -1.0257     0.2352  -4.362 1.29e-05 ***
+## Class3rd     -1.8870     0.2093  -9.017  &lt; 2e-16 ***
+## ClassCrew    -0.8394     0.1911  -4.393 1.12e-05 ***
+## SexFemale     2.4557     0.1698  14.463  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1939.3  on 1540  degrees of freedom
+## Residual deviance: 1560.7  on 1536  degrees of freedom
+## AIC: 1570.7
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># vemos las predicciones en el conjunto de test</span>
+    d_titanic_test<span class="op">$</span>pred&lt;-<span class="kw">predict</span>(m_glm, d_titanic_test, <span class="dt">type=</span> <span class="st">&quot;response&quot;</span>)
+
+    <span class="co"># Hacemos el resumen gráfico del resultado    </span>
+        <span class="kw">hist</span>(<span class="dv">100</span><span class="op">*</span>d_titanic_test<span class="op">$</span>pred, <span class="dt">col=</span><span class="st">&quot;skyblue&quot;</span>,
+             <span class="dt">main=</span><span class="st">&quot; resultados modelo glm() sobre datos Titanic test&quot;</span>,
+             <span class="dt">xlab=</span><span class="st">&quot;Probabilidad en % de supervivencia&quot;</span>,
+             <span class="dt">ylab=</span><span class="st">&quot;Frecuencia&quot;</span>)
+    <span class="co"># Marcamos un umbral en el que consideramos el pronostico como donación</span>
+    <span class="co"># este umbral lo ponemos en un valor del 60%    </span>
+        <span class="kw">abline</span>(<span class="dt">v=</span> <span class="dv">60</span>,<span class="dt">col=</span> <span class="st">&quot;navy&quot;</span>, <span class="dt">lwd=</span><span class="dv">3</span>)  <span class="co"># marcamos el umbral de supervivencia</span></code></pre></div>
+<p><img src="05-regresionLog_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">        d_titanic_test<span class="op">$</span>pred_final_<span class="dv">60</span> &lt;-<span class="st"> </span><span class="kw">ifelse</span>(d_titanic_test<span class="op">$</span>pred <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.6</span>, <span class="dv">1</span>, <span class="dv">0</span>)
+        <span class="co"># resumen de resultados</span>
+        <span class="kw">table</span>(d_titanic_test<span class="op">$</span>pred_final_<span class="dv">60</span>)</code></pre></div>
+<pre><code>## 
+##   0   1 
+## 575  85</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># podemos calcular el ajuste respecto a los casos reales con esta sencilla formula </span>
+    <span class="co"># antes vamos a cambiar los levels de survived No=0, Yes=1 </span>
+        <span class="kw">table</span>(d_titanic_test<span class="op">$</span>Survived) <span class="co"># vemos cual es el primero ---&gt; No</span></code></pre></div>
+<pre><code>## 
+##  No Yes 
+## 447 213</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">        <span class="kw">levels</span>(d_titanic_test<span class="op">$</span>Survived) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)
+        <span class="kw">mean</span>(d_titanic_test<span class="op">$</span>pred_final_<span class="dv">60</span> <span class="op">==</span><span class="st"> </span>d_titanic_test<span class="op">$</span>Survived)</code></pre></div>
+<pre><code>## [1] 0.7878788</code></pre>
+<p>Como vemos una vez realizado el pronostico podríamos probar diferentes umbrales y ver cual es el que da un mejor resultado con esta metodología.</p>
+</div>
+<div id="curvas-roc-y-auc" class="section level2">
+<h2><span class="header-section-number">6.2</span> curvas ROC y AUC</h2>
+<p>Estas curvas nos ayudan a controlar el acierto o no de los modelos cuando uno de los eventos es muy raro. Esto implica que predecir el evento opuesto conlleva un gran porcentaje de aciertos, y en cierta forma falsea la utilidad real de la predicción lo que hay que vigilar y entender.</p>
+<p>En estos casos es mejor sacrificar los aciertos generales en favor de concentrarlos sobre uno de los resultados, el más raro, el que buscamos distinguir.</p>
+<p>Por lo tanto la exactitud de la predicción general es una medida engañosa en el rendimiento de lo que realmente nos interesa. Este es un caso muy común en predicciones binomiales pues un caso, el de éxito puede tener una probabilidad general mucho menor que el de fracaso, y un porcentaje de acierto elevado, puede no tener importancia, pues lo que nos interesa no es acertar los fracasos sino los éxitos.</p>
+<p>Las curvas ROC son buenas para evaluar este problema en conjuntos de datos desequilibrados.</p>
+<p>Al hacer una gráfica <strong>ROC</strong> se representa mejor la compensación entre un modelo que es demasiado agresivo y uno que es demasiado pasivo. Lo que interesa es que el área de la curva sea máxima, cercana a 1, por lo que cuanto más se eleve respecto de la linea media mejor.</p>
+<p>Estas gráficas se pintan con la libraría <code>pROC</code>. Usaremos dos funciones una para pintar la gráfica y otra que calcula el <em>AUC</em> o área bajo la curva.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># Cargamos la libraría de graficos ROC</span>
+    <span class="kw">library</span>(pROC)</code></pre></div>
+<pre><code>## Type &#39;citation(&quot;pROC&quot;)&#39; for a citation.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;pROC&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     cov, smooth, var</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># Creamos una curva ROC basada en el modelo glm anterior</span>
+    ROC_glm60 &lt;-<span class="st"> </span><span class="kw">roc</span>(d_titanic_test<span class="op">$</span>Survived, d_titanic_test<span class="op">$</span>pred_final_<span class="dv">60</span>)
+    
+    <span class="co"># Pintamos la grafica ROC</span>
+    <span class="kw">plot</span>(ROC_glm60, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</code></pre></div>
+<p><img src="05-regresionLog_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co">#plot(ROC_naive, col = &quot;red&quot;)</span>
+    
+    <span class="co"># Calculamos el area bajo la ROC(AUC)</span>
+    <span class="kw">auc</span>(ROC_glm60)</code></pre></div>
+<pre><code>## Area under the curve: 0.6787</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    d_titanic_test<span class="op">$</span>pred_final_<span class="dv">40</span> &lt;-<span class="st"> </span><span class="kw">ifelse</span>(d_titanic_test<span class="op">$</span>pred <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.4</span>, <span class="dv">1</span>, <span class="dv">0</span>)
+    ROC_glm40 &lt;-<span class="kw">roc</span>(d_titanic_test<span class="op">$</span>Survived, d_titanic_test<span class="op">$</span>pred_final_<span class="dv">40</span>)
+    <span class="co"># Pintamos la grafica ROC</span>
+    <span class="kw">plot</span>(ROC_glm40, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</code></pre></div>
+<p><img src="05-regresionLog_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">auc</span>(ROC_glm40)</code></pre></div>
+<pre><code>## Area under the curve: 0.7179</code></pre>
+<p>Vistos los resultados, el seleccionar un umbral de 40, mejora la predicción de casos positivos de supervivencia.</p>
+</div>
+<div id="modelos-de-impacto-combinado" class="section level2">
+<h2><span class="header-section-number">6.3</span> Modelos de impacto combinado</h2>
+<p>En las formulaciones de modelos <code>glm</code> podemos expresar lo que se denominan impactos combinados o interacciones entre variables. Estos casos se dan cuando el efecto combinado de dos variables es muy importante y superior a la combinación lineal de ellas. Es decir el efecto es exponencial y no lineal sobre la variable a predecir.</p>
+<div id="ejemplo-1" class="section level3">
+<h3><span class="header-section-number">6.3.1</span> Ejemplo</h3>
+<p>Uno de los mejores predictores de donaciones futuras es el historial de donaciones anteriores y cuanto mas recientes, frecuentes y grandes mejor. En términos de comercialización, esto se conoce como R/F/M (Recency Frequency Money).</p>
+<p>Es muy probable que el impacto combinado de reciente y frecuencia puede ser mayor que la suma de los efectos por separado, si uno ha dado dinero a una ONG hace muy poco será poco probable que de otra vez enseguida.</p>
+<p>Debido a que estos predictores juntos tienen un mayor impacto en la variable dependiente, su efecto conjunto <strong>debe modelarse como una interacción</strong>. Esto en la formulación del modelo se identifica por un <code>*</code> en lugar de un <code>+</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Leemos la tabla de datos</span>
+    donors&lt;-<span class="kw">read.csv</span>(<span class="st">&quot;donors.csv&quot;</span>,<span class="dt">header =</span> <span class="ot">TRUE</span>)
+    <span class="kw">head</span>(donors)</code></pre></div>
+<pre><code>##   donated veteran bad_address age has_children wealth_rating
+## 1       0       0           0  60            0             0
+## 2       0       0           0  46            1             3
+## 3       0       0           0  NA            0             1
+## 4       0       0           0  70            0             2
+## 5       0       0           0  78            1             1
+## 6       0       0           0  NA            0             0
+##   interest_veterans interest_religion pet_owner catalog_shopper recency
+## 1                 0                 0         0               0 CURRENT
+## 2                 0                 0         0               0 CURRENT
+## 3                 0                 0         0               0 CURRENT
+## 4                 0                 0         0               0 CURRENT
+## 5                 0                 1         0               1 CURRENT
+## 6                 0                 0         0               0 CURRENT
+##    frequency  money
+## 1   FREQUENT MEDIUM
+## 2   FREQUENT   HIGH
+## 3   FREQUENT MEDIUM
+## 4   FREQUENT MEDIUM
+## 5   FREQUENT MEDIUM
+## 6 INFREQUENT MEDIUM</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">str</span>(donors)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    93462 obs. of  13 variables:
+##  $ donated          : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ veteran          : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ bad_address      : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ age              : int  60 46 NA 70 78 NA 38 NA NA 65 ...
+##  $ has_children     : int  0 1 0 0 1 0 1 0 0 0 ...
+##  $ wealth_rating    : int  0 3 1 2 1 0 2 3 1 0 ...
+##  $ interest_veterans: int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ interest_religion: int  0 0 0 0 1 0 0 0 0 0 ...
+##  $ pet_owner        : int  0 0 0 0 0 0 1 0 0 0 ...
+##  $ catalog_shopper  : int  0 0 0 0 1 0 0 0 0 0 ...
+##  $ recency          : Factor w/ 2 levels &quot;CURRENT&quot;,&quot;LAPSED&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ frequency        : Factor w/ 2 levels &quot;FREQUENT&quot;,&quot;INFREQUENT&quot;: 1 1 1 1 1 2 2 1 2 2 ...
+##  $ money            : Factor w/ 2 levels &quot;HIGH&quot;,&quot;MEDIUM&quot;: 2 1 2 2 2 2 2 2 2 2 ...</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Construimos un modelo complejo</span>
+    rfm_model &lt;-<span class="st"> </span><span class="kw">glm</span>(donated <span class="op">~</span><span class="st"> </span>money <span class="op">+</span><span class="st"> </span>recency<span class="op">*</span><span class="st"> </span>frequency ,<span class="dt">data =</span> donors,<span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)
+    
+<span class="co"># Resumen del modelo RFM </span>
+    <span class="kw">summary</span>(rfm_model)</code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = donated ~ money + recency * frequency, family = &quot;binomial&quot;, 
+##     data = donors)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.3696  -0.3696  -0.2895  -0.2895   2.7924  
+## 
+## Coefficients:
+##                                   Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)                       -3.01142    0.04279 -70.375   &lt;2e-16 ***
+## moneyMEDIUM                        0.36186    0.04300   8.415   &lt;2e-16 ***
+## recencyLAPSED                     -0.86677    0.41434  -2.092   0.0364 *  
+## frequencyINFREQUENT               -0.50148    0.03107 -16.143   &lt;2e-16 ***
+## recencyLAPSED:frequencyINFREQUENT  1.01787    0.51713   1.968   0.0490 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 37330  on 93461  degrees of freedom
+## Residual deviance: 36938  on 93457  degrees of freedom
+## AIC: 36948
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co">#summary(rfm_model)$coefficients</span>
+<span class="co"># Calculamos las predicciones del modelo RFM</span>
+    rfm_prob &lt;-<span class="st"> </span><span class="kw">predict</span>(rfm_model, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)
+    <span class="kw">head</span>(rfm_prob)</code></pre></div>
+<pre><code>##          1          2          3          4          5          6 
+## 0.06601640 0.04691282 0.06601640 0.06601640 0.06601640 0.04105058</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Pintamos la curva ROC para ver el efecto del modelo y calculamos el area AUC</span>
+    <span class="kw">require</span>(pROC)
+    ROC &lt;-<span class="st"> </span><span class="kw">roc</span>(donors<span class="op">$</span>donated, rfm_prob)
+    <span class="kw">plot</span>(ROC, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</code></pre></div>
+<p><img src="05-regresionLog_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">auc</span>(ROC)</code></pre></div>
+<pre><code>## Area under the curve: 0.5785</code></pre>
+</div>
+</div>
+<div id="optimizacion-de-un-modelos-glm" class="section level2">
+<h2><span class="header-section-number">6.4</span> Optimización de un modeloS <code>glm</code></h2>
+<p>Cuando a priori no sabemos qué variables tienen más dependencia para crear el modelo una forma de hacerlo es usando la regresión gradual. Esto consiste en aplicar una función que va incrementando las variables y detecta el mejor modelo de regresión.</p>
+<p>Para construirlo hacemos lo siguiente:</p>
+<p>1 creamos un modelo <code>glm()</code> sin predictores. se hace estableciendo la variable explicativa igual a 1. 2 Se crea otro modelo con todos las variables usando <code>~ .</code>. 3 Se aplica la función <code>step()</code> entre ambos modelos para realizar una regresión progresiva hacia adelante. Debe indicarse la dirección con <code>direction = &quot;forward&quot;</code> 4 Usamos la función <code>predict()</code> sobre la lista de modelos creados con <code>step</code></p>
+<p>Veamos el ejemplo:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># 1. Modelo sin predictores</span>
+        null_model &lt;-<span class="st"> </span><span class="kw">glm</span>(donated <span class="op">~</span><span class="dv">1</span>, <span class="dt">data =</span> donors, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)
+    
+    <span class="co"># 2. modelo completo</span>
+        full_model &lt;-<span class="st"> </span><span class="kw">glm</span>(donated <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> donors, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)
+    
+    <span class="co"># 3. funcion step ()</span>
+        step_model &lt;-<span class="st"> </span><span class="kw">step</span>(null_model, <span class="dt">scope =</span> <span class="kw">list</span>(<span class="dt">lower =</span> null_model, <span class="dt">upper =</span> full_model), <span class="dt">direction =</span> <span class="st">&quot;forward&quot;</span>)</code></pre></div>
+<pre><code>## Start:  AIC=37332.13
+## donated ~ 1</code></pre>
+<pre><code>## Warning in add1.glm(fit, scope$add, scale = scale, trace = trace, k = k, :
+## using the 70916/93462 rows from a combined fit</code></pre>
+<pre><code>##                     Df Deviance   AIC
+## + frequency          1    28502 37122
+## + money              1    28621 37241
+## + wealth_rating      1    28705 37326
+## + has_children       1    28705 37326
+## + age                1    28707 37328
+## + interest_veterans  1    28709 37330
+## + catalog_shopper    1    28710 37330
+## + pet_owner          1    28711 37331
+## &lt;none&gt;                    28714 37332
+## + interest_religion  1    28712 37333
+## + recency            1    28713 37333
+## + bad_address        1    28714 37334
+## + veteran            1    28714 37334
+## 
+## Step:  AIC=37024.77
+## donated ~ frequency</code></pre>
+<pre><code>## Warning in add1.glm(fit, scope$add, scale = scale, trace = trace, k = k, :
+## using the 70916/93462 rows from a combined fit</code></pre>
+<pre><code>##                     Df Deviance   AIC
+## + money              1    28441 36966
+## + wealth_rating      1    28493 37018
+## + has_children       1    28494 37019
+## + interest_veterans  1    28498 37023
+## + catalog_shopper    1    28499 37024
+## + age                1    28499 37024
+## + pet_owner          1    28499 37024
+## &lt;none&gt;                    28502 37025
+## + interest_religion  1    28501 37026
+## + recency            1    28501 37026
+## + bad_address        1    28502 37026
+## + veteran            1    28502 37027
+## 
+## Step:  AIC=36949.71
+## donated ~ frequency + money</code></pre>
+<pre><code>## Warning in add1.glm(fit, scope$add, scale = scale, trace = trace, k = k, :
+## using the 70916/93462 rows from a combined fit</code></pre>
+<pre><code>##                     Df Deviance   AIC
+## + wealth_rating      1    28431 36942
+## + has_children       1    28432 36943
+## + interest_veterans  1    28438 36948
+## + catalog_shopper    1    28438 36949
+## + age                1    28439 36949
+## + pet_owner          1    28439 36949
+## &lt;none&gt;                    28441 36950
+## + interest_religion  1    28440 36951
+## + recency            1    28441 36951
+## + bad_address        1    28441 36951
+## + veteran            1    28441 36952
+## 
+## Step:  AIC=36945.26
+## donated ~ frequency + money + wealth_rating</code></pre>
+<pre><code>## Warning in add1.glm(fit, scope$add, scale = scale, trace = trace, k = k, :
+## using the 70916/93462 rows from a combined fit</code></pre>
+<pre><code>##                     Df Deviance   AIC
+## + has_children       1    28421 36937
+## + interest_veterans  1    28429 36945
+## + catalog_shopper    1    28429 36945
+## + age                1    28429 36945
+## &lt;none&gt;                    28431 36945
+## + pet_owner          1    28430 36945
+## + interest_religion  1    28431 36947
+## + recency            1    28431 36947
+## + bad_address        1    28431 36947
+## + veteran            1    28431 36947
+## 
+## Step:  AIC=36938.08
+## donated ~ frequency + money + wealth_rating + has_children</code></pre>
+<pre><code>## Warning in add1.glm(fit, scope$add, scale = scale, trace = trace, k = k, :
+## using the 70916/93462 rows from a combined fit</code></pre>
+<pre><code>##                     Df Deviance   AIC
+## + pet_owner          1    28418 36937
+## + catalog_shopper    1    28418 36937
+## + interest_veterans  1    28418 36937
+## &lt;none&gt;                    28421 36938
+## + interest_religion  1    28420 36939
+## + recency            1    28421 36940
+## + age                1    28421 36940
+## + bad_address        1    28421 36940
+## + veteran            1    28421 36940
+## 
+## Step:  AIC=36932.08
+## donated ~ frequency + money + wealth_rating + has_children + 
+##     pet_owner</code></pre>
+<pre><code>## Warning in add1.glm(fit, scope$add, scale = scale, trace = trace, k = k, :
+## using the 70916/93462 rows from a combined fit</code></pre>
+<pre><code>##                     Df Deviance   AIC
+## &lt;none&gt;                    28418 36932
+## + interest_veterans  1    28416 36932
+## + catalog_shopper    1    28416 36932
+## + age                1    28417 36933
+## + recency            1    28417 36934
+## + interest_religion  1    28417 36934
+## + bad_address        1    28418 36934
+## + veteran            1    28418 36934</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">        <span class="kw">summary</span>(step_model)</code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = donated ~ frequency + money + wealth_rating + has_children + 
+##     pet_owner, family = &quot;binomial&quot;, data = donors)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.4023  -0.3625  -0.2988  -0.2847   2.7328  
+## 
+## Coefficients:
+##                     Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)         -3.05529    0.04556 -67.058  &lt; 2e-16 ***
+## frequencyINFREQUENT -0.49649    0.03100 -16.017  &lt; 2e-16 ***
+## moneyMEDIUM          0.36594    0.04301   8.508  &lt; 2e-16 ***
+## wealth_rating        0.03294    0.01238   2.660 0.007805 ** 
+## has_children        -0.15820    0.04707  -3.361 0.000777 ***
+## pet_owner            0.11712    0.04096   2.860 0.004243 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 37330  on 93461  degrees of freedom
+## Residual deviance: 36920  on 93456  degrees of freedom
+## AIC: 36932
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># estimamos la probabilidad</span>
+        step_prob &lt;-<span class="st"> </span><span class="kw">predict</span>(step_model, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)
+    
+    <span class="co"># Pintamos  ROC of the stepwise model</span>
+        <span class="kw">library</span>(pROC)
+        ROC &lt;-<span class="st"> </span><span class="kw">roc</span>(donors<span class="op">$</span>donated, step_prob)
+        <span class="kw">plot</span>(ROC, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</code></pre></div>
+<p><img src="05-regresionLog_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">        <span class="kw">auc</span>(ROC)</code></pre></div>
+<pre><code>## Area under the curve: 0.5855</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ingenuo.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="arboles.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/05-regresionLog.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["Aprendizaje supervisado en R.pdf", "Aprendizaje supervisado en R.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

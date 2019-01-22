@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html  lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Capítulo 3 Consideraciones previas | Aprendizaje supervisado en R</title>
+  <meta name="description" content="Aprendizaje no supervisado en R mediante redes bayesianas">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Capítulo 3 Consideraciones previas | Aprendizaje supervisado en R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://bookdown.org/yihui/bookdown/" />
+  <meta property="og:image" content="https://bookdown.org/yihui/bookdown/imag/cover" />
+  <meta property="og:description" content="Aprendizaje no supervisado en R mediante redes bayesianas" />
+  <meta name="github-repo" content="fervilber/redes_bayesianas_con_R" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 3 Consideraciones previas | Aprendizaje supervisado en R" />
+  
+  <meta name="twitter:description" content="Aprendizaje no supervisado en R mediante redes bayesianas" />
+  <meta name="twitter:image" content="https://bookdown.org/yihui/bookdown/imag/cover" />
+
+<meta name="author" content="F. Villalba (fervilber@gmail.com)">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="consideraciones-previas.html">
+<link rel="next" href="knn.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Aprendizaje supervisado en R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Aprendizaje supervisado en R</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#antes-de-empezar"><i class="fa fa-check"></i><b>1.1</b> Antes de empezar</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html"><i class="fa fa-check"></i><b>2</b> Consideraciones previas</a><ul>
+<li class="chapter" data-level="2.1" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#particiones"><i class="fa fa-check"></i><b>2.1</b> Crear particiones de la muestra</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#ejemplo-de-particion-a-mano"><i class="fa fa-check"></i><b>2.1.1</b> Ejemplo de partición a mano</a></li>
+<li class="chapter" data-level="2.1.2" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#ejemplo-de-particion-con-librarycaret"><i class="fa fa-check"></i><b>2.1.2</b> Ejemplo de partición con <code>library(caret)</code></a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#categorizacion-de-los-datos-origen"><i class="fa fa-check"></i><b>2.2</b> Categorización de los datos origen</a></li>
+<li class="chapter" data-level="2.3" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#manejo-de-na"><i class="fa fa-check"></i><b>2.3</b> Manejo de NA</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="consideraciones-previas-1.html"><a href="consideraciones-previas-1.html"><i class="fa fa-check"></i><b>3</b> Consideraciones previas</a><ul>
+<li class="chapter" data-level="3.1" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#particiones"><i class="fa fa-check"></i><b>3.1</b> Crear particiones de la muestra</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="consideraciones-previas-1.html"><a href="consideraciones-previas-1.html#ejemplo-de-particion-a-mano-1"><i class="fa fa-check"></i><b>3.1.1</b> Ejemplo de partición a mano</a></li>
+<li class="chapter" data-level="3.1.2" data-path="consideraciones-previas-1.html"><a href="consideraciones-previas-1.html#ejemplo-de-particion-con-librarycaret-1"><i class="fa fa-check"></i><b>3.1.2</b> Ejemplo de partición con <code>library(caret)</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="consideraciones-previas-1.html"><a href="consideraciones-previas-1.html#categorizacion-de-los-datos-origen-1"><i class="fa fa-check"></i><b>3.2</b> Categorización de los datos origen</a></li>
+<li class="chapter" data-level="3.3" data-path="consideraciones-previas-1.html"><a href="consideraciones-previas-1.html#manejo-de-na-1"><i class="fa fa-check"></i><b>3.3</b> Manejo de NA</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="knn.html"><a href="knn.html"><i class="fa fa-check"></i><b>4</b> k-NN (k-Nearest Neighbour Classification)</a><ul>
+<li class="chapter" data-level="4.1" data-path="knn.html"><a href="knn.html#consideraciones-previas-2"><i class="fa fa-check"></i><b>4.1</b> Consideraciones previas</a></li>
+<li class="chapter" data-level="4.2" data-path="knn.html"><a href="knn.html#ejemplo"><i class="fa fa-check"></i><b>4.2</b> Ejemplo</a></li>
+<li class="chapter" data-level="4.3" data-path="knn.html"><a href="knn.html#estandarizacion"><i class="fa fa-check"></i><b>4.3</b> Estandarización</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ingenuo.html"><a href="ingenuo.html"><i class="fa fa-check"></i><b>5</b> Naive Bayes- clasificación bayesiano ingenuo</a><ul>
+<li class="chapter" data-level="5.1" data-path="ingenuo.html"><a href="ingenuo.html#crear-un-modelo-con-naivebayes"><i class="fa fa-check"></i><b>5.1</b> Crear un modelo con <code>naivebayes</code></a></li>
+<li class="chapter" data-level="5.2" data-path="ingenuo.html"><a href="ingenuo.html#e1072"><i class="fa fa-check"></i><b>5.2</b> e1072</a></li>
+<li class="chapter" data-level="5.3" data-path="ingenuo.html"><a href="ingenuo.html#correccion-de-laplace"><i class="fa fa-check"></i><b>5.3</b> Corrección de laplace</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="glm.html"><a href="glm.html"><i class="fa fa-check"></i><b>6</b> Regresión logistica binaria</a><ul>
+<li class="chapter" data-level="6.1" data-path="glm.html"><a href="glm.html#construir-modelos-glm"><i class="fa fa-check"></i><b>6.1</b> Construir modelos <code>glm</code></a></li>
+<li class="chapter" data-level="6.2" data-path="glm.html"><a href="glm.html#curvas-roc-y-auc"><i class="fa fa-check"></i><b>6.2</b> curvas ROC y AUC</a></li>
+<li class="chapter" data-level="6.3" data-path="glm.html"><a href="glm.html#modelos-de-impacto-combinado"><i class="fa fa-check"></i><b>6.3</b> Modelos de impacto combinado</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="glm.html"><a href="glm.html#ejemplo-1"><i class="fa fa-check"></i><b>6.3.1</b> Ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="glm.html"><a href="glm.html#optimizacion-de-un-modelos-glm"><i class="fa fa-check"></i><b>6.4</b> Optimización de un modeloS <code>glm</code></a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="arboles.html"><a href="arboles.html"><i class="fa fa-check"></i><b>7</b> Árboles de decisión</a><ul>
+<li class="chapter" data-level="7.1" data-path="arboles.html"><a href="arboles.html#rpart"><i class="fa fa-check"></i><b>7.1</b> rpart</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="arboles.html"><a href="arboles.html#ejemplo-2"><i class="fa fa-check"></i><b>7.1.1</b> Ejemplo</a></li>
+<li class="chapter" data-level="7.1.2" data-path="arboles.html"><a href="arboles.html#ejemplo-2-1"><i class="fa fa-check"></i><b>7.1.2</b> Ejemplo 2</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="arboles.html"><a href="arboles.html#overfitting"><i class="fa fa-check"></i><b>7.2</b> overfitting</a></li>
+<li class="chapter" data-level="7.3" data-path="arboles.html"><a href="arboles.html#poda-de-los-arboles"><i class="fa fa-check"></i><b>7.3</b> Poda de los árboles</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="bosques.html"><a href="bosques.html"><i class="fa fa-check"></i><b>8</b> Bosques aleatorios de decisión</a><ul>
+<li class="chapter" data-level="8.1" data-path="bosques.html"><a href="bosques.html#ejemplo-de-bosque-aleatorio"><i class="fa fa-check"></i><b>8.1</b> Ejemplo de bosque aleatorio</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="resumen.html"><a href="resumen.html"><i class="fa fa-check"></i><b>9</b> Resumen</a><ul>
+<li class="chapter" data-level="9.1" data-path="resumen.html"><a href="resumen.html#crear-particiones-en-los-datos"><i class="fa fa-check"></i><b>9.1</b> Crear particiones en los datos</a></li>
+<li class="chapter" data-level="9.2" data-path="resumen.html"><a href="resumen.html#tabla-resumen-de-modelos"><i class="fa fa-check"></i><b>9.2</b> Tabla resumen de modelos</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Aprendizaje supervisado en R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="consideraciones-previas-1" class="section level1">
+<h1><span class="header-section-number">Capítulo 3</span> Consideraciones previas</h1>
+<p>Siempre tenemos que cuidar estas cuestiones antes de realizar el modelo de pronóstico. Simplemente detallaremos dos cosas básicas, por un lado generar dos conjuntos de datos que sirvan para el entrenamiento (<em>train</em>) y para la comprobación a posteriori (<em>test</em>). Con este sistema de división de la muestra evitamos el <em>overfitting</em> tan preocupante en los modelo de predicción.</p>
+<p>Por otro lado vamos a describir algunos ejemplo de factorización o agrupamiento de los datos. En casos como naive bayes, el uso de valores numéricos continuos en los datos de origen genera una sobredimensión de los casos posibles, un exceso de combinatoria entre variables, que desborda el modelo y puede producir errores en los pronósticos. En estos casos es siempre recomendable factorizar, agrupar y disminuir el número de opciones de cada variable.</p>
+<p>En otros casos como el algoritmo <em>knn</em>, la medición de distancia entre variables es el eje del pronostico, por lo que es necesario escalar los datos normalizarlos para equiparar distancias entre las variables, como veremos en los ejemplos.</p>
+<div id="particiones" class="section level2">
+<h2><span class="header-section-number">3.1</span> Crear particiones de la muestra</h2>
+<p>El primer paso en todo análisis debe ser dividir la muestra de datos en dos conjuntos de datos uno para entrenamiento y otro para test. Esto se puede hacer a mano, por ejemplo usando la función <code>sample</code>, o con la ayuda de algunos paquetes que llevan funciones incorporadas para las particiones de datos.</p>
+<div id="ejemplo-de-particion-a-mano-1" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> Ejemplo de partición a mano</h3>
+<p>Usaremos la base de datos de muestra de supervivientes del Titanic que se da como tabla en <code>dataset</code>. Para ver todas las series y bases de datos disponibles en dataset escribiremos <code>data()</code>.</p>
+<p>Titanic es una tabla que indica casos y frecuencias de cada caso, por lo que para crear la tabla completa hay que expandir la tabla origen, y repetir cada caso el número de veces que indica la columna frecuencia.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># cargamos los datos</span>
+    <span class="kw">data</span>(<span class="st">&quot;Titanic&quot;</span>)
+    <span class="kw">str</span>(Titanic)</code></pre></div>
+<pre><code>##  &#39;table&#39; num [1:4, 1:2, 1:2, 1:2] 0 0 35 0 0 0 17 0 118 154 ...
+##  - attr(*, &quot;dimnames&quot;)=List of 4
+##   ..$ Class   : chr [1:4] &quot;1st&quot; &quot;2nd&quot; &quot;3rd&quot; &quot;Crew&quot;
+##   ..$ Sex     : chr [1:2] &quot;Male&quot; &quot;Female&quot;
+##   ..$ Age     : chr [1:2] &quot;Child&quot; &quot;Adult&quot;
+##   ..$ Survived: chr [1:2] &quot;No&quot; &quot;Yes&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">class</span>(Titanic)</code></pre></div>
+<pre><code>## [1] &quot;table&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Transformamos los datos wn una dataframe</span>
+    Titanic_df=<span class="kw">as.data.frame</span>(Titanic)
+    <span class="kw">str</span>(Titanic_df)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    32 obs. of  5 variables:
+##  $ Class   : Factor w/ 4 levels &quot;1st&quot;,&quot;2nd&quot;,&quot;3rd&quot;,..: 1 2 3 4 1 2 3 4 1 2 ...
+##  $ Sex     : Factor w/ 2 levels &quot;Male&quot;,&quot;Female&quot;: 1 1 1 1 2 2 2 2 1 1 ...
+##  $ Age     : Factor w/ 2 levels &quot;Child&quot;,&quot;Adult&quot;: 1 1 1 1 1 1 1 1 2 2 ...
+##  $ Survived: Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Freq    : num  0 0 35 0 0 0 17 0 118 154 ...</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Creamos una tabla de casos competos a partir de la frecuencia de cada uno</span>
+<span class="co"># Esto repite cada caso el num de veces que se ha dado </span>
+<span class="co"># según la frecuencia que está en la columna Freq de la tabla.</span>
+    repetir_secuencia=<span class="kw">rep.int</span>(<span class="kw">seq_len</span>(<span class="kw">nrow</span>(Titanic_df)), Titanic_df<span class="op">$</span>Freq) 
+<span class="co"># tenemos una serie con el numero de registro de la tabla original y las veces que se repite    </span>
+
+<span class="co"># Creamos una nueva tabla repitiendo los casos según el modelo anterior.</span>
+    Titanic_data=Titanic_df[repetir_secuencia,]
+    
+<span class="co"># Ya no necesitamos la columna de frecuencias  y la borramos.</span>
+    Titanic_data<span class="op">$</span>Freq=<span class="ot">NULL</span>
+    <span class="kw">head</span>(Titanic_data)</code></pre></div>
+<pre><code>##     Class  Sex   Age Survived
+## 3     3rd Male Child       No
+## 3.1   3rd Male Child       No
+## 3.2   3rd Male Child       No
+## 3.3   3rd Male Child       No
+## 3.4   3rd Male Child       No
+## 3.5   3rd Male Child       No</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Como vemos todo son factores</span>
+    <span class="kw">str</span>(Titanic_data)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    2201 obs. of  4 variables:
+##  $ Class   : Factor w/ 4 levels &quot;1st&quot;,&quot;2nd&quot;,&quot;3rd&quot;,..: 3 3 3 3 3 3 3 3 3 3 ...
+##  $ Sex     : Factor w/ 2 levels &quot;Male&quot;,&quot;Female&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Age     : Factor w/ 2 levels &quot;Child&quot;,&quot;Adult&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Survived: Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+<p>En este caso buscamos dividir la tabla en dos conjuntos uno de entrenamiento con el 75% de los registros y otro de comprobación o de test con el 25% restante de los registros que nos servirá para validar el modelo.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># -----------------------------------</span>
+<span class="co"># DIVISION A MANO</span>
+<span class="co"># contamos el num de registro de la base de datos del titanic</span>
+    <span class="kw">nrow</span>(Titanic_data)</code></pre></div>
+<pre><code>## [1] 2201</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># calculamos el 75%</span>
+    num_reg_entrenamiento&lt;-<span class="kw">as.integer</span>(<span class="fl">0.75</span><span class="op">*</span><span class="kw">nrow</span>(Titanic_data))
+    num_reg_entrenamiento</code></pre></div>
+<pre><code>## [1] 1650</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Creamos una vector de 75% de los registros aleatorio</span>
+    titanic_train &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">nrow</span>(Titanic_data), num_reg_entrenamiento)
+
+<span class="co"># Creamos el conjunto de registros de entrenamiento pasando ese vector a la tabla </span>
+    d_titanic_train &lt;-<span class="st"> </span>Titanic_data[titanic_train,]
+    <span class="kw">head</span>(d_titanic_train)</code></pre></div>
+<pre><code>##        Class  Sex   Age Survived
+## 27.34    3rd Male Adult      Yes
+## 10.5     2nd Male Adult       No
+## 11.157   3rd Male Adult       No
+## 12.516  Crew Male Adult       No
+## 10.11    2nd Male Adult       No
+## 11.209   3rd Male Adult       No</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Creamos los datos de comprobación o test (notese el -)</span>
+    d_titanic_test &lt;-<span class="st"> </span>Titanic_data[<span class="op">-</span>titanic_train,]
+    <span class="kw">head</span>(d_titanic_test)</code></pre></div>
+<pre><code>##      Class  Sex   Age Survived
+## 3.7    3rd Male Child       No
+## 3.10   3rd Male Child       No
+## 3.13   3rd Male Child       No
+## 3.17   3rd Male Child       No
+## 3.21   3rd Male Child       No
+## 3.26   3rd Male Child       No</code></pre>
+<p>Usando una formulación simple hemos creado dos conjuntos de muestra aleatorios excluyentes de entrenamiento y muestra.</p>
+</div>
+<div id="ejemplo-de-particion-con-librarycaret-1" class="section level3">
+<h3><span class="header-section-number">3.1.2</span> Ejemplo de partición con <code>library(caret)</code></h3>
+<p>Veamos otra forma de hacerlo usando la librería <code>library(caret)</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(caret)
+<span class="kw">set.seed</span>(<span class="dv">987654321</span>)
+<span class="co"># creamos un vector de particion sobre la variable Survived</span>
+<span class="co"># el tamaño de muestra será de 75%</span>
+trainIndex=<span class="kw">createDataPartition</span>(Titanic_data<span class="op">$</span>Survived, <span class="dt">p=</span><span class="fl">0.75</span>)<span class="op">$</span>Resample1
+
+d_titanic_train=Titanic_data[trainIndex, ]
+d_titanic_test=<span class="st"> </span>Titanic_data[<span class="op">-</span>trainIndex, ]</code></pre></div>
+</div>
+</div>
+<div id="categorizacion-de-los-datos-origen-1" class="section level2">
+<h2><span class="header-section-number">3.2</span> Categorización de los datos origen</h2>
+<p>Existe un problema en el uso de las funciones de clasificación cuando las combinaciones posibles entre variables tienden a ser infinitas. Esto sucede cuando, por ejemplo, una de las variables es de tipo numérico, y tiene datos continuos.</p>
+<p>La mayoría de los modelos de clasificación solo son capaces de trabajar un número limitado de categorías, y por lo tanto, es necesario agrupar los datos originales y reducir las opciones combinatorias, por lo que hay que evitar siempre el uso de variables continuas en los datos. Si no realizamos la reducción de categorías nos arriesgamos a obtener errores, incluso evidentes, en los pronósticos.</p>
+<p>Un caso evidente es el uso de la función de <code>naive_bayes</code> que maneja muy mal los datos continuos, pues está pensado para variables categorizadas.</p>
+<p>La solución es realizar una categorización previa de los datos que evite el problema y a la vez simplifique el modelo de pronóstico. Categorizar significa agrupar los datos de las variables continuas en categorías próximas, simplificando las salidas y reduciendo las combinaciones.</p>
+<p>Un ejemplo claro es redondear las salidas numéricas a números divisibles por 10 o por 5, o sustituir la variable por los cuantiles más representativos.</p>
+<p>Para transformar las variables y categorizarlas podemos usar varias funciones de R como:</p>
+<ul>
+<li>convertir a factor con la función <code>as.factor()</code>. * Las categorías de un factor se ven con la función <code>levels()</code> * los nombres de esas categorías los damos con la función <code>lables()</code></li>
+<li>la función <code>table(tabla_1$hora)</code> cuenta y resumen los datos</li>
+<li>las funciones <code>quantile()</code> o <code>cut()</code> ayudan a dividir y categorizar variables continuas</li>
+<li>funciones de redondeo</li>
+</ul>
+<p>Vamos a ver varios ejemplo con la dataset “women” que contiene las alturas y pesos de mujeres americanas de edad entre 30 y 39 años. Ambos datos de altura y peso son continuos y toman 15 posibles valores, por lo que las combinaciones cruzadas dan muchísimos casos posibles. Para simplificar las combinatorias vamos a categorizar los datos de varias maneras, como ejemplos:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># cargamos los datos de</span>
+    <span class="kw">data</span>(<span class="st">&quot;women&quot;</span>)
+    <span class="kw">str</span>(women)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    15 obs. of  2 variables:
+##  $ height: num  58 59 60 61 62 63 64 65 66 67 ...
+##  $ weight: num  115 117 120 123 126 129 132 135 139 142 ...</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">summary</span>(women)</code></pre></div>
+<pre><code>##      height         weight     
+##  Min.   :58.0   Min.   :115.0  
+##  1st Qu.:61.5   1st Qu.:124.5  
+##  Median :65.0   Median :135.0  
+##  Mean   :65.0   Mean   :136.7  
+##  3rd Qu.:68.5   3rd Qu.:148.0  
+##  Max.   :72.0   Max.   :164.0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">length</span>(<span class="kw">unique</span>(women<span class="op">$</span>height)) <span class="co"># numero de registros unicos</span></code></pre></div>
+<pre><code>## [1] 15</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">length</span>(<span class="kw">unique</span>(women<span class="op">$</span>weight))</code></pre></div>
+<pre><code>## [1] 15</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># opcion 1. creamos una funcion de redondeo</span>
+    redondea5&lt;-<span class="cf">function</span>(x,<span class="dt">base=</span><span class="dv">5</span>){
+            <span class="kw">as.integer</span>(base<span class="op">*</span><span class="kw">round</span>(x<span class="op">/</span>base))
+    }
+    
+<span class="co"># Copiamos la tabla con el nombre nuevo</span>
+    mujeres_a&lt;-women
+<span class="co"># pasamos los datos a sistema internacional</span>
+    mujeres_a<span class="op">$</span>peso&lt;-mujeres_a<span class="op">$</span>weight<span class="op">*</span><span class="fl">0.453592</span> <span class="co"># paso a kg</span>
+    mujeres_a<span class="op">$</span>peso&lt;-<span class="st"> </span><span class="kw">redondea5</span>(mujeres_a<span class="op">$</span>peso,<span class="dv">10</span>)
+    <span class="kw">length</span>(<span class="kw">unique</span>(mujeres_a<span class="op">$</span>peso))  </code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    mujeres_a<span class="op">$</span>altura&lt;-mujeres_a<span class="op">$</span>height<span class="op">*</span><span class="fl">2.54</span> <span class="co"># paso a cm</span>
+    mujeres_a<span class="op">$</span>altura&lt;-<span class="st"> </span><span class="kw">redondea5</span>(mujeres_a<span class="op">$</span>altura,<span class="dv">10</span>)
+    <span class="kw">length</span>(<span class="kw">unique</span>(mujeres_a<span class="op">$</span>altura))  </code></pre></div>
+<pre><code>## [1] 4</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">head</span>(mujeres_a)</code></pre></div>
+<pre><code>##   height weight peso altura
+## 1     58    115   50    150
+## 2     59    117   50    150
+## 3     60    120   50    150
+## 4     61    123   60    150
+## 5     62    126   60    160
+## 6     63    129   60    160</code></pre>
+<p>Con la simplificación anterior hemos pasado de 15x15 casos combinatorios a solo 3x4.</p>
+<p>Podríamos usar también factores para convertir los datos</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Ejemplo de transformacion a factor</span>
+    mujeres_a<span class="op">$</span>peso1&lt;-<span class="st"> </span><span class="kw">factor</span>(mujeres_a<span class="op">$</span>peso,
+                         <span class="dt">levels =</span> <span class="kw">c</span>(<span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">70</span>),
+                         <span class="dt">labels =</span> <span class="kw">c</span>( <span class="st">&quot;flaca&quot;</span>,<span class="st">&quot;media&quot;</span>,<span class="st">&quot;gordita&quot;</span>))
+<span class="co"># Ejemplo 2 de trans a factor:</span>
+    mujeres_a<span class="op">$</span>altura1 &lt;-<span class="st"> </span><span class="kw">factor</span>(mujeres_a<span class="op">$</span>altura, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="dv">150</span>,<span class="dv">160</span>,<span class="dv">170</span>,<span class="dv">180</span>), <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Bajo&quot;</span>,<span class="st">&quot;Medio&quot;</span>,<span class="st">&quot;Alta&quot;</span>, <span class="st">&quot;muy alta&quot;</span>))
+    <span class="kw">head</span>(mujeres_a)</code></pre></div>
+<pre><code>##   height weight peso altura peso1 altura1
+## 1     58    115   50    150 flaca    Bajo
+## 2     59    117   50    150 flaca    Bajo
+## 3     60    120   50    150 flaca    Bajo
+## 4     61    123   60    150 media    Bajo
+## 5     62    126   60    160 media   Medio
+## 6     63    129   60    160 media   Medio</code></pre>
+</div>
+<div id="manejo-de-na-1" class="section level2">
+<h2><span class="header-section-number">3.3</span> Manejo de NA</h2>
+<p>En todos los modelos, la existencia de registros con falta de datos o NA, anula el valor de dicha evidencia en el modelo de entrenamiento.</p>
+<p>Una solución es completar estos casos con las funciones como <code>impute()</code> del paquete <code>e1071</code> que sustituye el NA por un valor estimado, que puede ser la media.</p>
+<p>En la tabla de ejemplo <code>donors</code> hay muchos datos de la edad de los clientes que faltan.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># Vemos cuantos datos de edad faltan.</span>
+        <span class="kw">set.seed</span>(<span class="dv">333</span>)
+        datos&lt;-<span class="kw">data.frame</span>(<span class="dt">a=</span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">100</span>,<span class="dt">replace =</span> T))
+        datos<span class="op">$</span>a[<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)] &lt;-<span class="st"> </span><span class="ot">NA</span>
+        <span class="kw">head</span>(datos)</code></pre></div>
+<pre><code>##    a
+## 1 NA
+## 2  1
+## 3 NA
+## 4  6
+## 5  1
+## 6  8</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="kw">library</span>(e1071)
+    <span class="co"># Imputamos la nuevos datos estimados de edad asignando usando impute</span>
+        datos<span class="op">$</span>imputed &lt;-<span class="st"> </span><span class="kw">impute</span>(datos)
+        <span class="kw">head</span>(datos)</code></pre></div>
+<pre><code>##    a a
+## 1 NA 5
+## 2  1 1
+## 3 NA 5
+## 4  6 6
+## 5  1 1
+## 6  8 8</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># Otra forma es hacerlo manualmente    </span>
+        datos<span class="op">$</span>imputed2&lt;-<span class="kw">ifelse</span>(<span class="kw">is.na</span>(datos<span class="op">$</span>a),<span class="dv">5</span>,datos<span class="op">$</span>a)
+        <span class="kw">head</span>(datos)</code></pre></div>
+<pre><code>##    a a imputed2
+## 1 NA 5        5
+## 2  1 1        1
+## 3 NA 5        5
+## 4  6 6        6
+## 5  1 1        1
+## 6  8 8        8</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="consideraciones-previas.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="knn.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/02-consideraciones.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["Aprendizaje supervisado en R.pdf", "Aprendizaje supervisado en R.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

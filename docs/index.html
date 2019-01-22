@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html  lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Aprendizaje supervisado en R</title>
+  <meta name="description" content="Describimos algunos modelos de aprendizaje supervisado con R, principalmente redes bayesianas">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Aprendizaje supervisado en R" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://bookdown.org/yihui/bookdown/" />
+  <meta property="og:image" content="https://bookdown.org/yihui/bookdown/imag/cover.jpg" />
+  <meta property="og:description" content="Describimos algunos modelos de aprendizaje supervisado con R, principalmente redes bayesianas" />
+  <meta name="github-repo" content="fervilber/redes_bayesianas_con_R" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Aprendizaje supervisado en R" />
+  
+  <meta name="twitter:description" content="Describimos algunos modelos de aprendizaje supervisado con R, principalmente redes bayesianas" />
+  <meta name="twitter:image" content="https://bookdown.org/yihui/bookdown/imag/cover.jpg" />
+
+<meta name="author" content="F. Villalba (fervilber@gmail.com)">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+
+<link rel="next" href="preparar-los-datos-para-el-modelo-de-aprendizaje.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Aprendizaje supervisado en R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introducción</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#antes-de-empezar"><i class="fa fa-check"></i><b>1.1</b> Antes de empezar</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#r"><i class="fa fa-check"></i><b>1.2</b> R</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><i class="fa fa-check"></i><b>2</b> Preparar los datos para el modelo de aprendizaje</a><ul>
+<li class="chapter" data-level="2.1" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#particiones"><i class="fa fa-check"></i><b>2.1</b> Crear particiones de la muestra</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#ejemplo-de-particion-a-mano"><i class="fa fa-check"></i><b>2.1.1</b> Ejemplo de partición a mano</a></li>
+<li class="chapter" data-level="2.1.2" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#ejemplo-de-particion-con-librarycaret"><i class="fa fa-check"></i><b>2.1.2</b> Ejemplo de partición con <code>library(caret)</code></a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#categorizacion-de-los-datos-origen"><i class="fa fa-check"></i><b>2.2</b> Categorización de los datos origen</a></li>
+<li class="chapter" data-level="2.3" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#manejo-de-na"><i class="fa fa-check"></i><b>2.3</b> Manejo de NA</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html"><i class="fa fa-check"></i><b>3</b> Consideraciones previas</a><ul>
+<li class="chapter" data-level="3.1" data-path="preparar-los-datos-para-el-modelo-de-aprendizaje.html"><a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html#particiones"><i class="fa fa-check"></i><b>3.1</b> Crear particiones de la muestra</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#ejemplo-de-particion-a-mano-1"><i class="fa fa-check"></i><b>3.1.1</b> Ejemplo de partición a mano</a></li>
+<li class="chapter" data-level="3.1.2" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#ejemplo-de-particion-con-librarycaret-1"><i class="fa fa-check"></i><b>3.1.2</b> Ejemplo de partición con <code>library(caret)</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#categorizacion-de-los-datos-origen-1"><i class="fa fa-check"></i><b>3.2</b> Categorización de los datos origen</a></li>
+<li class="chapter" data-level="3.3" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#manejo-de-na-1"><i class="fa fa-check"></i><b>3.3</b> Manejo de NA</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="knn.html"><a href="knn.html"><i class="fa fa-check"></i><b>4</b> k-NN (k-Nearest Neighbour Classification)</a><ul>
+<li class="chapter" data-level="4.1" data-path="knn.html"><a href="knn.html#consideraciones-previas-1"><i class="fa fa-check"></i><b>4.1</b> Consideraciones previas</a></li>
+<li class="chapter" data-level="4.2" data-path="knn.html"><a href="knn.html#ejemplo"><i class="fa fa-check"></i><b>4.2</b> Ejemplo</a></li>
+<li class="chapter" data-level="4.3" data-path="knn.html"><a href="knn.html#estandarizacion"><i class="fa fa-check"></i><b>4.3</b> Estandarización</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ingenuo.html"><a href="ingenuo.html"><i class="fa fa-check"></i><b>5</b> Naive Bayes- clasificación bayesiano ingenuo</a><ul>
+<li class="chapter" data-level="5.1" data-path="ingenuo.html"><a href="ingenuo.html#crear-un-modelo-con-naivebayes"><i class="fa fa-check"></i><b>5.1</b> Crear un modelo con <code>naivebayes</code></a></li>
+<li class="chapter" data-level="5.2" data-path="ingenuo.html"><a href="ingenuo.html#e1072"><i class="fa fa-check"></i><b>5.2</b> e1072</a></li>
+<li class="chapter" data-level="5.3" data-path="ingenuo.html"><a href="ingenuo.html#correccion-de-laplace"><i class="fa fa-check"></i><b>5.3</b> Corrección de laplace</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="glm.html"><a href="glm.html"><i class="fa fa-check"></i><b>6</b> Regresión logistica binaria</a><ul>
+<li class="chapter" data-level="6.1" data-path="glm.html"><a href="glm.html#construir-modelos-glm"><i class="fa fa-check"></i><b>6.1</b> Construir modelos <code>glm</code></a></li>
+<li class="chapter" data-level="6.2" data-path="glm.html"><a href="glm.html#curvas-roc-y-auc"><i class="fa fa-check"></i><b>6.2</b> curvas ROC y AUC</a></li>
+<li class="chapter" data-level="6.3" data-path="glm.html"><a href="glm.html#modelos-de-impacto-combinado"><i class="fa fa-check"></i><b>6.3</b> Modelos de impacto combinado</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="glm.html"><a href="glm.html#ejemplo-1"><i class="fa fa-check"></i><b>6.3.1</b> Ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="glm.html"><a href="glm.html#optimizacion-de-un-modelos-glm"><i class="fa fa-check"></i><b>6.4</b> Optimización de un modeloS <code>glm</code></a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="arboles.html"><a href="arboles.html"><i class="fa fa-check"></i><b>7</b> Árboles de decisión</a><ul>
+<li class="chapter" data-level="7.1" data-path="arboles.html"><a href="arboles.html#rpart"><i class="fa fa-check"></i><b>7.1</b> rpart</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="arboles.html"><a href="arboles.html#ejemplo-2"><i class="fa fa-check"></i><b>7.1.1</b> Ejemplo</a></li>
+<li class="chapter" data-level="7.1.2" data-path="arboles.html"><a href="arboles.html#ejemplo-2-1"><i class="fa fa-check"></i><b>7.1.2</b> Ejemplo 2</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="arboles.html"><a href="arboles.html#overfitting"><i class="fa fa-check"></i><b>7.2</b> overfitting</a></li>
+<li class="chapter" data-level="7.3" data-path="arboles.html"><a href="arboles.html#poda-de-los-arboles"><i class="fa fa-check"></i><b>7.3</b> Poda de los árboles</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="bosques.html"><a href="bosques.html"><i class="fa fa-check"></i><b>8</b> Bosques aleatorios de decisión</a><ul>
+<li class="chapter" data-level="8.1" data-path="bosques.html"><a href="bosques.html#ejemplo-de-bosque-aleatorio"><i class="fa fa-check"></i><b>8.1</b> Ejemplo de bosque aleatorio</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="resumen.html"><a href="resumen.html"><i class="fa fa-check"></i><b>9</b> Resumen</a><ul>
+<li class="chapter" data-level="9.1" data-path="resumen.html"><a href="resumen.html#crear-particiones-en-los-datos"><i class="fa fa-check"></i><b>9.1</b> Crear particiones en los datos</a></li>
+<li class="chapter" data-level="9.2" data-path="resumen.html"><a href="resumen.html#tabla-resumen-de-modelos"><i class="fa fa-check"></i><b>9.2</b> Tabla resumen de modelos</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Aprendizaje supervisado en R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Aprendizaje supervisado en R</h1>
+<p class="author"><em>F. Villalba (<a href="mailto:fervilber@gmail.com">fervilber@gmail.com</a>)</em></p>
+<p class="date"><em>octubre - 2018</em></p>
+</div>
+<div id="introduccion" class="section level1">
+<h1><span class="header-section-number">Capítulo 1</span> Introducción</h1>
+<p><img src="imag/cover.jpg" style="display: block; margin: auto;" /></p>
+<p>El <strong>aprendizaje supervisado</strong> es una técnica usada en minería de datos, en la que se genera una función de pronóstico a partir del entrenamiento previo sobre datos <strong>etiquetados</strong>. Es decir, aprendemos a partir de casos reales y extrapolamos el resultado a los casos futuros.</p>
+<p>El proceso habitual consiste en dividir la muestra en dos conjuntos, uno de <strong>entrenamiento</strong> y otro de <strong>prueba</strong> o test. Con los datos de entrenamiento ordenados convenientemente obtenemos un conjunto de vectores o pares de entrada-salida.</p>
+<p>La salida es la variable dependiente, y las entradas son las variables que usaremos para pronosticar la variable dependiente. es decir, la salida es lo que deseamos pronosticar. Los algoritmos de aprendizaje, “aprenden” de los datos de entrenamiento en lo que representamos como un <strong>modelo</strong> o fórmula con la que podremos hacer predicciones extrapolando los resultados anteriores a otras entradas diferentes.</p>
+<p>Los modelos de aprendizaje supervisado, se denominan habitualmente <strong>modelos de clasificación</strong> ya que tratan de agrupar los valores en conjuntos con características semejantes, y la respuesta es el grupo al que creen que pertenece el hecho definido en la entrada.</p>
+<p>Existen diferentes algoritmos que abordan el problema de aprendizaje supervisado y técnicas de minería de datos, en concreto vamos a explicar en este manual los 5 siguientes:</p>
+<ul>
+<li><a href="knn.html#knn">knn ((k-Nearest Neighbour Classification)</a>.</li>
+<li><a href="ingenuo.html#ingenuo">naive bayes</a></li>
+<li><a href="glm.html#glm">regresión logística binaria</a></li>
+<li><a href="arboles.html#arboles">árboles de decisión</a></li>
+<li><a href="bosques.html#bosques">bosques de clasificación</a></li>
+</ul>
+<div id="antes-de-empezar" class="section level2">
+<h2><span class="header-section-number">1.1</span> Antes de empezar</h2>
+<p>Este libro ha sido escrito con objeto de contribuir a la difusión del conocimiento. Se ha tratado de introducir, mediante ejemplos, gráficas y código, el uso de modelos matemáticos y estadísticos complejos. Para ello se hace uso del lenguaje R, que pone al alcance de todos un cuerpo matemático avanzado y poderoso, y además de forma <em>libre, desinteresada y gratuíta</em>.</p>
+<p>Este libro forma parte de ese espíritu libre con el que muchos disfrutamos y vivimos cada día, con la esperanza de contribuir al avance del conocimiento y de la ciencia, espero que lo disfrutes y lo aproveches.</p>
+<blockquote>
+<p><em>Ars longa, vita brevis</em></p>
+</blockquote>
+<p><a href="https://github.com/fervilber/aprendizaje_supervisado" target="_blank"><img src="imag/gritos.jpg" style="display: block; margin: auto;" /></a></p>
+<p>El manual se ha escrito usando la librería <a href="https://bookdown.org/yihui/bookdown/">bookdown</a> que facilita la creación de documentación y libros que contienen código (además es libre como todo en R).</p>
+<p><img src="imag/by-nc-sa.png" alt="Creative Commons License" /><br />
+La versión en línea de este libro tiene licencia <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p>
+</div>
+<div id="r" class="section level2">
+<h2><span class="header-section-number">1.2</span> R</h2>
+<p>R es un lenguaje de programación estadístico y de creación de modelos matemáticos. Es un lenguaje adaptado al uso científico y uno de los que más ha crecido en los últimos años.</p>
+<p>El libro requiere cierta práctica previa con R, si quieres iniciarte en este apasionante mundo de los modelos y la ciencia de datos con R y ves que el nivel del libro es avanzado empieza antes con este otro manual <span class="citation">(F. Villalba Bergado <a href="#ref-R-Fer">2017</a>)</span>.</p>
+<div class="figure">
+<img src="imag/empresavii.png" alt="Reconozca las cosas como son, sin que las acrescienten o mengüen las pasiones. Empresa VII del libro de Diego Saavedra Fajardo" />
+<p class="caption">Reconozca las cosas como son, sin que las acrescienten o mengüen las pasiones. Empresa VII del libro de Diego Saavedra Fajardo</p>
+</div>
+<pre class="firma"><code>Fernando Villalba Bergado  
+Cieza, España</code></pre>
+
+</div>
+</div>
+<h3>Referencias</h3>
+<div id="refs" class="references">
+<div id="ref-R-Fer">
+<p>F. Villalba Bergado. 2017. <em>Manual de R para el científico de datos</em>. Murcia, España: -. <a href="https://drive.google.com/file/d/1EoLm-rqr5eikmpodb90uIGyju6E1jBjZ/view?usp=sharing" class="uri">https://drive.google.com/file/d/1EoLm-rqr5eikmpodb90uIGyju6E1jBjZ/view?usp=sharing</a>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="preparar-los-datos-para-el-modelo-de-aprendizaje.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/index.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["Aprendizaje supervisado en R.pdf", "Aprendizaje supervisado en R.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

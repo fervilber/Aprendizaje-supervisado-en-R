@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html  lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Capítulo 5 FOTOGRAFÍAS | Aprendizaje no supervisado en R</title>
+  <meta name="description" content="Capítulo 5 FOTOGRAFÍAS | Aprendizaje no supervisado en R">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Capítulo 5 FOTOGRAFÍAS | Aprendizaje no supervisado en R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Capítulo 5 FOTOGRAFÍAS | Aprendizaje no supervisado en R" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 5 FOTOGRAFÍAS | Aprendizaje no supervisado en R" />
+  
+  <meta name="twitter:description" content="Capítulo 5 FOTOGRAFÍAS | Aprendizaje no supervisado en R" />
+  
+
+<meta name="author" content="Fernando Villalba">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="documentos.html">
+<link rel="next" href="referencias.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Ejemplo de informe</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Aprendizaje no supervisado en R</a></li>
+<li class="chapter" data-level="2" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html"><i class="fa fa-check"></i><b>2</b> Consideraciones previas</a><ul>
+<li class="chapter" data-level="2.1" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#particiones"><i class="fa fa-check"></i><b>2.1</b> Crear particiones de la muestra</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#ejemplo-de-particion-a-mano"><i class="fa fa-check"></i><b>2.1.1</b> Ejemplo de partición a mano</a></li>
+<li class="chapter" data-level="2.1.2" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#ejemplo-de-particion-con-librarycaret"><i class="fa fa-check"></i><b>2.1.2</b> Ejemplo de partición con <code>library(caret)</code></a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#categorizacion-de-los-datos-origen"><i class="fa fa-check"></i><b>2.2</b> Categorización de los datos origen</a></li>
+<li class="chapter" data-level="2.3" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#manejo-de-na"><i class="fa fa-check"></i><b>2.3</b> Manejo de NA</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="knn.html"><a href="knn.html"><i class="fa fa-check"></i><b>3</b> k-NN (k-Nearest Neighbour Classification)</a><ul>
+<li class="chapter" data-level="3.1" data-path="knn.html"><a href="knn.html#tabla-resumen-de-modelos"><i class="fa fa-check"></i><b>3.1</b> Tabla resumen de modelos</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="documentos.html"><a href="documentos.html"><i class="fa fa-check"></i><b>4</b> DOCUMENTOS</a><ul>
+<li class="chapter" data-level="4.1" data-path="documentos.html"><a href="documentos.html#crono-documental"><i class="fa fa-check"></i><b>4.1</b> CRONO DOCUMENTAL</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="documentos.html"><a href="documentos.html#section"><i class="fa fa-check"></i><b>4.1.1</b> 1992</a></li>
+<li class="chapter" data-level="4.1.2" data-path="documentos.html"><a href="documentos.html#section-1"><i class="fa fa-check"></i><b>4.1.2</b> 2000</a></li>
+<li class="chapter" data-level="4.1.3" data-path="documentos.html"><a href="documentos.html#section-2"><i class="fa fa-check"></i><b>4.1.3</b> 2001</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="fotografias.html"><a href="fotografias.html"><i class="fa fa-check"></i><b>5</b> FOTOGRAFÍAS</a><ul>
+<li class="chapter" data-level="5.1" data-path="fotografias.html"><a href="fotografias.html#tunel"><i class="fa fa-check"></i><b>5.1</b> Túnel</a></li>
+<li class="chapter" data-level="5.2" data-path="fotografias.html"><a href="fotografias.html#balsa"><i class="fa fa-check"></i><b>5.2</b> Balsa</a></li>
+<li class="chapter" data-level="5.3" data-path="fotografias.html"><a href="fotografias.html#otros-trucos"><i class="fa fa-check"></i><b>5.3</b> OTROS TRUCOS</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="chapter" data-level="6" data-path="cod-para-insertar-listado-de-enlaces-en-markdown.html"><a href="cod-para-insertar-listado-de-enlaces-en-markdown.html"><i class="fa fa-check"></i><b>6</b> cod para insertar listado de enlaces en markdown</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Aprendizaje no supervisado en R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="fotografias" class="section level1">
+<h1><span class="header-section-number">Capítulo 5</span> FOTOGRAFÍAS</h1>
+<p>Se muestran fotografías de las actuaciones, tanto durante las obras como de las visitas realizadas en fase de explotación.</p>
+<div id="tunel" class="section level2">
+<h2><span class="header-section-number">5.1</span> Túnel</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw">include_graphics</span>(<span class="st">&quot;imag/20151118_095058.jpg&quot;</span>)</code></pre></div>
+<p><img src="imag/20151118_095058.jpg" width="682" /></p>
+</div>
+<div id="balsa" class="section level2">
+<h2><span class="header-section-number">5.2</span> Balsa</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw">include_graphics</span>(<span class="st">&quot;imag/20151118_095137.jpg&quot;</span>)</code></pre></div>
+<p><img src="imag/20151118_095137.jpg" width="50%" /></p>
+</div>
+<div id="otros-trucos" class="section level2">
+<h2><span class="header-section-number">5.3</span> OTROS TRUCOS</h2>
+<p>que hay que leer aquí <a href="https://www.zevross.com/blog/2017/06/19/tips-and-tricks-for-working-with-images-and-figures-in-r-markdown-documents/" class="uri">https://www.zevross.com/blog/2017/06/19/tips-and-tricks-for-working-with-images-and-figures-in-r-markdown-documents/</a></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># pintamos todas las imagenes</span>
+<span class="kw">library</span>(knitr)
+myimages&lt;-<span class="kw">list.files</span>(<span class="st">&quot;imag/&quot;</span>, <span class="dt">pattern =</span> <span class="st">&quot;.jpg&quot;</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)
+<span class="kw">include_graphics</span>(myimages)</code></pre></div>
+<p><img src="imag/20151118_095058.jpg" width="30%" /><img src="imag/20151118_095137.jpg" width="30%" /><img src="imag/20151118_095151.jpg" width="30%" /><img src="imag/20151118_102505.jpg" width="30%" /><img src="imag/20151118_102617.jpg" width="30%" /><img src="imag/20151118_102621.jpg" width="30%" /><img src="imag/20151118_102626.jpg" width="30%" /><img src="imag/20151118_102710.jpg" width="30%" /><img src="imag/20151118_102928.jpg" width="30%" /><img src="imag/20151118_103019.jpg" width="30%" /><img src="imag/20151118_104655.jpg" width="30%" /><img src="imag/20151118_104658.jpg" width="30%" /><img src="imag/20151118_104736.jpg" width="30%" /><img src="imag/20151118_104811.jpg" width="30%" /><img src="imag/20151118_104830.jpg" width="30%" /></p>
+<p>Este libro ha sido escrito en R, si quieres iniciarte en R mira <span class="citation">(F. Villalba <a href="#ref-R-Fer">2017</a>)</span>.</p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-R-Fer">
+<p>F. Villalba. 2017. <em>Manual de R para el científico de datos</em>. Murcia, España: Amigos de R Murcia. <a href="https://drive.google.com/file/d/1EoLm-rqr5eikmpodb90uIGyju6E1jBjZ/view?usp=sharing" class="uri">https://drive.google.com/file/d/1EoLm-rqr5eikmpodb90uIGyju6E1jBjZ/view?usp=sharing</a>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="documentos.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="referencias.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/04-foto.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["Aprendizaje supervisado en R.pdf", "Aprendizaje supervisado en R.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

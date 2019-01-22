@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html  lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Capítulo 10 cod para insertar listado de enlaces en markdown | Aprendizaje no supervisado en R</title>
+  <meta name="description" content="Capítulo 10 cod para insertar listado de enlaces en markdown | Aprendizaje no supervisado en R mediante redes bayesianas">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Capítulo 10 cod para insertar listado de enlaces en markdown | Aprendizaje no supervisado en R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Capítulo 10 cod para insertar listado de enlaces en markdown | Aprendizaje no supervisado en R mediante redes bayesianas" />
+  <meta name="github-repo" content="fervilber/redes_bayesianas_con_R" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 10 cod para insertar listado de enlaces en markdown | Aprendizaje no supervisado en R" />
+  
+  <meta name="twitter:description" content="Capítulo 10 cod para insertar listado de enlaces en markdown | Aprendizaje no supervisado en R mediante redes bayesianas" />
+  
+
+<meta name="author" content="Fernando Villalba Bergado">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="referencias.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Ejemplo de informe</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Aprendizaje supervisado en R</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#antes-de-empezar"><i class="fa fa-check"></i><b>1.1</b> Antes de empezar</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html"><i class="fa fa-check"></i><b>2</b> Consideraciones previas</a><ul>
+<li class="chapter" data-level="2.1" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#particiones"><i class="fa fa-check"></i><b>2.1</b> Crear particiones de la muestra</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#ejemplo-de-particion-a-mano"><i class="fa fa-check"></i><b>2.1.1</b> Ejemplo de partición a mano</a></li>
+<li class="chapter" data-level="2.1.2" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#ejemplo-de-particion-con-librarycaret"><i class="fa fa-check"></i><b>2.1.2</b> Ejemplo de partición con <code>library(caret)</code></a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#categorizacion-de-los-datos-origen"><i class="fa fa-check"></i><b>2.2</b> Categorización de los datos origen</a></li>
+<li class="chapter" data-level="2.3" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#manejo-de-na"><i class="fa fa-check"></i><b>2.3</b> Manejo de NA</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="consideraciones-previas-1.html"><a href="consideraciones-previas-1.html"><i class="fa fa-check"></i><b>3</b> Consideraciones previas</a><ul>
+<li class="chapter" data-level="3.1" data-path="consideraciones-previas.html"><a href="consideraciones-previas.html#particiones"><i class="fa fa-check"></i><b>3.1</b> Crear particiones de la muestra</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="consideraciones-previas-1.html"><a href="consideraciones-previas-1.html#ejemplo-de-particion-a-mano-1"><i class="fa fa-check"></i><b>3.1.1</b> Ejemplo de partición a mano</a></li>
+<li class="chapter" data-level="3.1.2" data-path="consideraciones-previas-1.html"><a href="consideraciones-previas-1.html#ejemplo-de-particion-con-librarycaret-1"><i class="fa fa-check"></i><b>3.1.2</b> Ejemplo de partición con <code>library(caret)</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="consideraciones-previas-1.html"><a href="consideraciones-previas-1.html#categorizacion-de-los-datos-origen-1"><i class="fa fa-check"></i><b>3.2</b> Categorización de los datos origen</a></li>
+<li class="chapter" data-level="3.3" data-path="consideraciones-previas-1.html"><a href="consideraciones-previas-1.html#manejo-de-na-1"><i class="fa fa-check"></i><b>3.3</b> Manejo de NA</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="knn.html"><a href="knn.html"><i class="fa fa-check"></i><b>4</b> k-NN (k-Nearest Neighbour Classification)</a><ul>
+<li class="chapter" data-level="4.1" data-path="knn.html"><a href="knn.html#consideraciones-previas-2"><i class="fa fa-check"></i><b>4.1</b> Consideraciones previas</a></li>
+<li class="chapter" data-level="4.2" data-path="knn.html"><a href="knn.html#ejemplo"><i class="fa fa-check"></i><b>4.2</b> Ejemplo</a></li>
+<li class="chapter" data-level="4.3" data-path="knn.html"><a href="knn.html#estandarizacion"><i class="fa fa-check"></i><b>4.3</b> Estandarización</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ingenuo.html"><a href="ingenuo.html"><i class="fa fa-check"></i><b>5</b> Naive Bayes- clasificación bayesiano ingenuo</a><ul>
+<li class="chapter" data-level="5.1" data-path="ingenuo.html"><a href="ingenuo.html#crear-un-modelo-con-naivebayes"><i class="fa fa-check"></i><b>5.1</b> Crear un modelo con <code>naivebayes</code></a></li>
+<li class="chapter" data-level="5.2" data-path="ingenuo.html"><a href="ingenuo.html#e1072"><i class="fa fa-check"></i><b>5.2</b> e1072</a></li>
+<li class="chapter" data-level="5.3" data-path="ingenuo.html"><a href="ingenuo.html#correccion-de-laplace"><i class="fa fa-check"></i><b>5.3</b> Corrección de laplace</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="glm.html"><a href="glm.html"><i class="fa fa-check"></i><b>6</b> Regresión logistica binaria</a><ul>
+<li class="chapter" data-level="6.1" data-path="glm.html"><a href="glm.html#construir-modelos-glm"><i class="fa fa-check"></i><b>6.1</b> Construir modelos <code>glm</code></a></li>
+<li class="chapter" data-level="6.2" data-path="glm.html"><a href="glm.html#curvas-roc-y-auc"><i class="fa fa-check"></i><b>6.2</b> curvas ROC y AUC</a></li>
+<li class="chapter" data-level="6.3" data-path="glm.html"><a href="glm.html#modelos-de-impacto-combinado"><i class="fa fa-check"></i><b>6.3</b> Modelos de impacto combinado</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="glm.html"><a href="glm.html#ejemplo-1"><i class="fa fa-check"></i><b>6.3.1</b> Ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="glm.html"><a href="glm.html#optimizacion-de-un-modelos-glm"><i class="fa fa-check"></i><b>6.4</b> Optimización de un modeloS <code>glm</code></a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="arboles.html"><a href="arboles.html"><i class="fa fa-check"></i><b>7</b> Árboles de decisión</a><ul>
+<li class="chapter" data-level="7.1" data-path="arboles.html"><a href="arboles.html#rpart"><i class="fa fa-check"></i><b>7.1</b> rpart</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="arboles.html"><a href="arboles.html#ejemplo-2"><i class="fa fa-check"></i><b>7.1.1</b> Ejemplo</a></li>
+<li class="chapter" data-level="7.1.2" data-path="arboles.html"><a href="arboles.html#ejemplo-2-1"><i class="fa fa-check"></i><b>7.1.2</b> Ejemplo 2</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="arboles.html"><a href="arboles.html#overfitting"><i class="fa fa-check"></i><b>7.2</b> overfitting</a></li>
+<li class="chapter" data-level="7.3" data-path="arboles.html"><a href="arboles.html#poda-de-los-arboles"><i class="fa fa-check"></i><b>7.3</b> Poda de los árboles</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="bosques.html"><a href="bosques.html"><i class="fa fa-check"></i><b>8</b> Bosques aleatorios de decisión</a><ul>
+<li class="chapter" data-level="8.1" data-path="bosques.html"><a href="bosques.html#ejemplo-de-bosque-aleatorio"><i class="fa fa-check"></i><b>8.1</b> Ejemplo de bosque aleatorio</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="resumen.html"><a href="resumen.html"><i class="fa fa-check"></i><b>9</b> Resumen</a><ul>
+<li class="chapter" data-level="9.1" data-path="resumen.html"><a href="resumen.html#crear-particiones-en-los-datos"><i class="fa fa-check"></i><b>9.1</b> Crear particiones en los datos</a></li>
+<li class="chapter" data-level="9.2" data-path="resumen.html"><a href="resumen.html#tabla-resumen-de-modelos"><i class="fa fa-check"></i><b>9.2</b> Tabla resumen de modelos</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="chapter" data-level="10" data-path="cod-para-insertar-listado-de-enlaces-en-markdown.html"><a href="cod-para-insertar-listado-de-enlaces-en-markdown.html"><i class="fa fa-check"></i><b>10</b> cod para insertar listado de enlaces en markdown</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Aprendizaje no supervisado en R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="cod-para-insertar-listado-de-enlaces-en-markdown" class="section level1">
+<h1><span class="header-section-number">Capítulo 10</span> cod para insertar listado de enlaces en markdown</h1>
+<ul>
+<li><a href=./docu/1992_05_27_DECLARACION_INTERES_GENERAL_RDLEY_3_1992_DE_22_DE_MAYO.pdf target='_blank'>1992_05_27_DECLARACION_INTERES_GENERAL_RDLEY_3_1992_DE_22_DE_MAYO </a></li>
+<li><a href=./docu/2000_01_17_CONVENIO_GESTION_DIRECTA_A1_TUNEL_CENAJO.pdf target='_blank'>2000_01_17_CONVENIO_GESTION_DIRECTA_A1_TUNEL_CENAJO </a></li>
+<li><a href=./docu/2000_05_01_PLIEGO_PCP_CONCURSO_TALAVE_CENAJO.pdf target='_blank'>2000_05_01_PLIEGO_PCP_CONCURSO_TALAVE_CENAJO </a></li>
+<li><a href=./docu/2000_08_19_BOE_LICITACION_obra_Tunel_Talave_Cenajo.pdf target='_blank'>2000_08_19_BOE_LICITACION_obra_Tunel_Talave_Cenajo </a></li>
+<li><a href=./docu/2000_11_27_ACTA_APERTURA_PLICAS_concurso_Talave_Cenajo.pdf target='_blank'>2000_11_27_ACTA_APERTURA_PLICAS_concurso_Talave_Cenajo </a></li>
+<li><a href=./docu/2001_02_09_ADJUD_MESA_CONTRATACION_TTC.pdf target='_blank'>2001_02_09_ADJUD_MESA_CONTRATACION_TTC </a></li>
+<li><a href=./docu/2001_02_20_RESOLUCION_IMPACTO_AMBIENTAL_TUNEL_NO_NECESIDAD_DE_DIA.pdf target='_blank'>2001_02_20_RESOLUCION_IMPACTO_AMBIENTAL_TUNEL_NO_NECESIDAD_DE_DIA </a></li>
+</ul>
+
+<div id="refs" class="references">
+<div>
+<p>F. Villalba. 2017. <em>Manual de R para el científico de datos</em>. Murcia, España: Amigos de R Murcia. <a href="https://drive.google.com/file/d/1EoLm-rqr5eikmpodb90uIGyju6E1jBjZ/view?usp=sharing" class="uri">https://drive.google.com/file/d/1EoLm-rqr5eikmpodb90uIGyju6E1jBjZ/view?usp=sharing</a>.</p>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="referencias.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/imagenes.rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["Aprendizaje supervisado en R.pdf", "Aprendizaje supervisado en R.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
